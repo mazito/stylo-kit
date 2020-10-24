@@ -1,0 +1,28 @@
+{
+  "name": "svelte-stylo-kit",
+  "version": "0.1.0",
+  "description": "Svelte theme-aware UI kit built with Stylo",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "svelte": "src/index.js",
+  "keywords": ["Svelte", "UIKit", "svelte-stylo", "CSSinJS", "DesignSystems", "StyledSystem"],
+  "author": "mario.zito@treme.io",
+  "license": "MIT",
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "start": "fuser -k -n tcp 5000 ; sirv public --host 0.0.0.0 --port 5000"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^11.0.0",
+    "@rollup/plugin-node-resolve": "^7.0.0",
+    "rollup": "^1.20.0",
+    "rollup-plugin-livereload": "^1.0.0",
+    "rollup-plugin-svelte": "^5.0.3",
+    "rollup-plugin-terser": "^7.0.0",
+    "svelte": "^3.0.0"
+  },
+  "dependencies": {
+    "sirv-cli": "^0.4.4"
+  }
+}
