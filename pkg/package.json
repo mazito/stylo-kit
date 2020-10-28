@@ -5,7 +5,14 @@
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "svelte": "src/index.js",
-  "keywords": ["Svelte", "UIKit", "svelte-stylo", "CSSinJS", "DesignSystems", "StyledSystem"],
+  "keywords": [
+    "Svelte",
+    "UIKit",
+    "svelte-stylo",
+    "CSSinJS",
+    "DesignSystems",
+    "StyledSystem"
+  ],
   "author": "mario.zito@treme.io",
   "license": "MIT",
   "scripts": {

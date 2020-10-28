@@ -5,6 +5,7 @@ import MenuItem from './menu/MenuItem.svelte'
 import MenuDivider from './menu/MenuDivider.svelte'
 import MenuTitle from './menu/MenuTitle.svelte'
 import Chip from './chips/Chip.svelte'
+import TextField from './fields/text-field/TextField.svelte'
 
 export {
   // Kit components
@@ -14,5 +15,6 @@ export {
   MenuItem, 
   MenuDivider, 
   MenuTitle,
-  Chip
+  Chip,
+  TextField
 }
