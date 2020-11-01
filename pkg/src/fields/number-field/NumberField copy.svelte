@@ -2,19 +2,8 @@
   id={id} layout={layed} {...container} {...field} bind:value >
 
   <span slot="input-area">
-    <InputArea id={id} type={typed} layout={layed} {...field} bind:value />
-  </span>
-
-  <span slot="buttons-area">
-    {#if type==='password'} 
-      <Label 
-        on:click={() => { togglePassword = !togglePassword }}
-        lg color="dark" mr="1"
-        w="1" h="1" align="center"
-        pointer hover round>
-        {@html togglePassword ? "&ocir;" : "&osol;" } 
-      </Label>
-    {/if}
+    <InputArea 
+      id={id} type={type} layout={layed} {...field} bind:value={buffer} />
   </span>
 
 </FieldContainer>
@@ -24,34 +13,40 @@
   import { Box, Icon, Label, Input, Text, Panel, onBreakpoint } from 'svelte-stylo';
   import FieldContainer from '../FieldContainer.svelte'
   import InputArea from '../_InputArea.svelte'
-  import { validateIf, exceedsMaxlength, isEmpty } from '../validators'
-  import { randid } from '../helpers'
+  import { validateIf, exceedsMax, exceedsMin, isEmpty } from '../validators'
+  import { randid, autoLayout } from '../helpers'
+  import { formatNumber } from './formats';
 
   export let
+    show = true,
+    //
     id = null,
     label = '',
-    type = 'text',
-    layout = 'stacked',
+    type = 'decimal',
+    layout = 'inline',
     width = null,
     size='nm',
+    //
+    help = null,
     hints = '',
-    initial = '',
-    maxlen = null,
-    messages = {},
     status = 'empty',
+    messages = {},
+    //
     required = false,
     disabled = false,
     readonly = false,
-    help = false,
-    show = true,
-    value;
+    // number props
+    initial = '',
+    max = null, min = null,
+    format = '',
+    //
+    value,
+    buffer;
 
   let
     container = {}, 
     field = {},
     me = null,
-    toggleHints = false,
-    togglePassword = true,
     typed = type,
     layed = layout,
     maxch = null;
@@ -69,7 +64,7 @@
 
   $: if ($$props) {
 
-    layed = autoLayout(value, maxch, type);
+    layed = autoLayout(value, maxch, type, layout);
 
     typed = type;
 
@@ -89,35 +84,37 @@
       readonly: readonly,
       status: status, 
       messages: messages,
-      maxlen: maxlen      
+      max: max,
+      min: min      
     }
-  };
-
-  $: if (type==='password' && togglePassword!==null) {
-    typed = togglePassword ? 'password' : 'text';
   };
 
   $: if (value !== null) {
 
-    layed = autoLayout(value, maxch, type);
+    layed = autoLayout(value, maxch, type, layout);
 
-    field.width = (layed==='stacked') ? '100%' : width;
+    // field.width = (layed==='stacked') ? '100%' : width;
 
     field.status = 'valid'; // reset before validations
 
     field = validateIf(value, field, [
-      exceedsMaxlength,
+      exceedsMax,
+      exceedsMin,
       isEmpty
     ])
+
+    console.log("NumberField formatted=", formatNumber(value, format))
   }
 
-  function autoLayout(value, maxch, type) {
-    
-    if (type==='area') return 'stacked';
-
-    let isPhone = onBreakpoint({'*': true, 'md': false})
-
-    return (isPhone && isPhone && layout==='inline' && value.length > maxch) 
-            ? 'stacked' : layout;
+  function onFocus(ev) {
+    buffer = value;
+    console.log("NumberField onFocus value,buffer=", value, buffer);
   }
+
+  function onBlur(ev) {
+    value = buffer;
+    buffer = formatNumber(value, format)
+    console.log("NumberField onBlur value,buffer=", value, buffer);
+  }
+
 </script>

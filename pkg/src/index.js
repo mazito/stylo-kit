@@ -6,6 +6,7 @@ import MenuDivider from './menu/MenuDivider.svelte'
 import MenuTitle from './menu/MenuTitle.svelte'
 import Chip from './chips/Chip.svelte'
 import TextField from './fields/text-field/TextField.svelte'
+import NumberField from './fields/number-field/NumberField.svelte'
 
 export {
   // Kit components
@@ -16,5 +17,6 @@ export {
   MenuDivider, 
   MenuTitle,
   Chip,
-  TextField
+  TextField, 
+  NumberField
 }

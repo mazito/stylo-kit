@@ -1,31 +1,29 @@
 <main>
 
   <Panel px="nm" py="md">
-    <Heading h1 thin>Testing Stylo Kit components</Heading>
+    <Heading h1 thin>Stylo Kit components</Heading>
   </Panel>
 
   <Panel 
-    flex="row" 
+    flex="column" 
     items="start" 
     justify="start">
 
-    <Panel border-right="3" w="18ch" px="xs" py="nm" align="left">
-
-      <Heading xs px="nm" mb="nm">COMPONENTS</Heading>
+    <Panel border-right="3" w="100%" px="xs" align="left">
 
       {#each demos as demo}
-        <Panel 
+        <Box 
           on:click={()=>{clicked(demo)}} 
           color="primary" 
           py="sm" px="nm" mb="sm"
           pointer hover>
           {demo.title}
-          </Panel>
+          </Box>
       {/each}
 
     </Panel>
 
-    <Panel grow px="nm" nopy="nm">
+    <Panel grow w="100%" px="nm" nopy="nm">
       <svelte:component this={theDemo}/>
     </Panel>
 
@@ -34,7 +32,7 @@
 </main>
 
 <script>
-  import { Panel, Heading } from 'svelte-stylo'
+  import { Panel, Heading, Box, Label } from 'svelte-stylo'
   import { customizedTheme } from './customized-theme'
   import TextFieldDemo from './demos/TextFieldDemo.svelte'
   import NumberFieldDemo from './demos/NumberFieldDemo.svelte'
@@ -46,7 +44,7 @@
     { title: 'NumberField', component: NumberFieldDemo}
   ]
 
-  let theDemo = demos[0].component;
+  let theDemo = demos[1].component;
 
   function clicked(demo) {
     theDemo = demo.component;

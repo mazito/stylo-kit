@@ -1,56 +1,54 @@
-<Panel 
-  w="100%"
-  >
+<Panel w="100%">
 
-  <Panel 
-    flex={inline ? 'row' : "column"}
-    items='end'
-    >
+  <Panel flex={inline ? 'row' : "column"}  items='end'>
 
     <!-- Label Area -->
     <Panel 
       show={label}
-      flex={inline ? null : 'row'}}
-      w={{'*': (inline ? "40%" : "100%"), 'md': (inline ? "22ch" : "100%")}}
+      noflex={inline ? null : 'row'}}
+      w={{'*': (inline ? "50%" : "100%"), 'md': (inline ? "22ch" : "100%")}}
+      border-bottom={inline ? "2" : null}
       items="center"
+      overflow="hidden"
+      pb={inline ? "0" : null}
+      pl={inline ? "xs" : null}
+      mr={inline ? "xs" : null}
+      mb={inline ? null : "-6px"}
       >
-        <!-- Label here -->
-        <LabelArea
-          id={id}
-          inline={inline}
-          label={label}
-          required={required}
-          />
+       <!-- Label here -->
+       <Label control={id} mr="xs" color="body" xs bold>
+          {label}
+          <Text show={!!required} color="warning">*</Text>
+        </Label>
+      
+        <StatusIcon show={!!required && !disabled && !readonly} status={status} />
     </Panel>
 
-    <!-- Input Area -->
-    <Panel 
-      flex items='end' 
-      w={{'*': (inline ? "60%" : "100%"), 'md': "100%"}}
-      >
-      <Panel grow align="left" flex items="end" justify="start">
+    <Panel flex items='end' justify="start"
+      w={{'*': (inline ? "50%" : "100%"), 'md': "100%"}}>
+
+      <!-- Input Area -->
+      <Panel 
+        align="left" noflex items="center" justify="start" w="100%">
         
-        <Panel overflow="hidden">
+        <Panel grow overflow="hidden" w="100%">
           <slot name="input-area"></slot>
         </Panel>
 
-        <!-- Helper Button -->
+        <!-- Helper Button 
+        -->
         <Box show={helper} ml="sm" overflow="hidden">
-          <HelpButton
-            id={id}
-            label={label}
-            bind:toggle={toggleHints}
-          />
+          <HelpButton id={id} label={label} bind:toggle={toggleHints}/>
         </Box>
 
       </Panel>
       
-    </Panel>
-    
-    <!-- Buttons Area -->
-      <Panel overflow="hidden" border="1">
-        <slot name="buttons-area"></slot>
+      <!-- Buttons Area -->
+      <Panel overflow="hidden" pb="xs">
+          <slot name="buttons-area"></slot>
       </Panel>
+
+    </Panel>
 
   </Panel>
 
@@ -68,9 +66,10 @@
 </Panel>
 
 <script>
-  import { Panel, Box, Text } from 'svelte-stylo'
+  import { Panel, Box, Text, Label } from 'svelte-stylo'
   import LabelArea from './_LabelArea.svelte'
   import HelpButton from './_HelpButton.svelte'
+  import StatusIcon from './_StatusIcon.svelte'
 
   export let 
     id,
@@ -82,6 +81,8 @@
     messages = {},
     status = 'empty',
     required = false,
+    disabled = false,
+    readonly = false,
     helper = true,
     value,
     show = true,
