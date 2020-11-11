@@ -3,7 +3,7 @@
   {...container} {...field} bind:value>
 
   <span slot="before-area">
-    before-area
+    <!-- before-area -->
   </span>
 
   <span slot="input-area">

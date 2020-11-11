@@ -24,7 +24,7 @@
       //right: 0,
       //top: "2px",
       align: "center", 
-      pb: "xs",
+      //pb: "xs",
       size: "sm",
       name: status, 
       color: (colored[status] || null)

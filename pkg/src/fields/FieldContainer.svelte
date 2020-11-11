@@ -9,9 +9,7 @@
 
   <!-- Prefix area -->
   {#if wide}
-    <Box mr="nm">
-      <slot name="before-area"></slot>
-    </Box>
+    <slot name="before-area"></slot>
   {/if}
 
   <!-- Default area -->
@@ -28,19 +26,24 @@
           {label}
           <!-- <Text show={!!required && status==='empty'} color="warning">*</Text> -->
 
+          {#if isStacked}
           <Box {...statusArea}>
             <StatusIcon show={!!required} status={status}/>
           </Box>
+          {/if}
+
         </Label>
 
         {#if isInline}
-          <Box pb="nm" color="white">:</Box>
+        <Box {...statusArea}>
+          <StatusIcon show={!!required} status={status}/>
+        </Box>
         {/if}
 
       </Panel>
       {/if}
 
-      <Panel {...inputArea}>
+      <Panel grow {...inputArea}>
         <slot name="input-area"></slot>
 
         <!-- In  Compact and Mini variants, afterArea must overlay input -->
@@ -128,16 +131,19 @@
     compact = variant === 'compact' || null,
     mini = variant === 'mini' || null;
     layout = (mini || compact) ? 'stacked': layout ; 
+    console.log("FieldContainer layout1", layout)
   }
 
   $: if (layout !== null) {
     isInline = (layout === 'inline');
     isStacked = (layout === 'stacked');
+    console.log("FieldContainer layout2", layout)
 
     defaultArea = {
       flex: isInline ? 'row' : null,
       items: isInline ? 'end' : null,
-      border: "1",
+      justify: isInline ? 'start' : null,
+      // border: "1",
       bg: isStacked && focused ? 'light' : 'transparent'
     }
 
@@ -153,7 +159,9 @@
       // inline props
       flex: isInline ? 'row' : null,
       items: isInline ? 'center' : null,
+      justify: isInline ? 'start' : 'start',
       mr: isInline ? "sm" : null,     
+      pb: isInline ? "0" : null,
       "border-bottom": isInline ? "3" : null, 
       
       // stacked props
@@ -167,19 +175,18 @@
     labelContent = {
       color: focused ? "dark" : "body",
       "font-size": "xs",
-      pb: isInline ? "xs" : null
+      py: isInline ? "xs" : null,
+      line: "tight"
     }
 
     statusArea = {
       // for Compact and Mini layouts
-      //position: (mini) ?  'absolute' : 'relative',
-      //right: (mini) ?  '2px' : null,
-      //top: (mini) ?  '2px' : null,
-      mr: (mini) ? '0' : null,
+      mr: (mini) ? '0' : (wide ? 'xs' : null),
       mb: (mini) ? 'xs' : null,
 
       // when Wide layout
-      ml: (wide) ? 'nm' : null,
+      ml: (wide) ? 'xs' : null,
+      pb: isInline ? 'sm' : null,
     }
 
     afterArea = {
