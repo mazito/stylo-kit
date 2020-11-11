@@ -42,7 +42,10 @@
     size='nm',
     disabled = false,
     readonly = false,
-    value;
+    value,
+
+    // force mini variant
+    mini = false;
 
   let borders = {
     'enabled': "2px solid orange",
@@ -77,7 +80,7 @@
       "font-size": "md",
       border: "none",
       mt: isArea ? "nm" : "sm", 
-      pt: isArea ? "xs" : "sm", 
+      pt: isArea ? "xs" : (mini ? "0" : "sm"), 
       pb: isArea ? 0 : "xs",
       line: "20px",
       width: isArea ? "100%" : width,

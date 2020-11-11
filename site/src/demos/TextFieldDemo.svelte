@@ -37,6 +37,7 @@
     label: 'Supervisor de calidad',
     type: 'text',
     layout: 'stacked',
+    variant: 'mini',
     initial: 'Algo',
     hints: 'Some useful hint ...',
     width: '16ch',

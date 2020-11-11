@@ -1,7 +1,5 @@
 {#if show && status}
-  <Box>
-    <Icon {...symbolProps} />
-  </Box>
+  <Icon {...symbolProps} />
 {/if}
 
 <script>
@@ -12,8 +10,7 @@
     show = true;
 
   let colored = {
-    'empty': 'muted',
-    'incomplete': 'muted',
+    'empty': 'warning',
     'error': 'danger',
     'valid': 'success'
   }
@@ -28,7 +25,7 @@
       //top: "2px",
       align: "center", 
       pb: "xs",
-      size: "nm",
+      size: "sm",
       name: status, 
       color: (colored[status] || null)
     }

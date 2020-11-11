@@ -27,6 +27,17 @@
       ]}
     bind:value={field.layout}
     />
+    &nbsp;
+    <Chip>variant</Chip> 
+    <Select 
+      p="xs"
+      options={[
+          {value:'wide', text: 'wide'},
+          {value:'compact', text: 'compact'},
+          {value:'mini', text: 'mini'},
+        ]}
+      bind:value={field.variant}
+    />
   </Panel>
 
   <Panel mb="xs">

@@ -1,119 +1,195 @@
-<Panel w="100%">
+<!--
+  prefix-area
+  postfix-area
+  input-area
+  limits-area
+-->
+{#if show}
+<Panel flex items='center' w="100%">
 
-  <Panel flex={inline ? 'row' : "column"}  items='end'>
+  <!-- Prefix area -->
+  {#if wide}
+    <Box mr="nm">
+      <slot name="before-area"></slot>
+    </Box>
+  {/if}
 
-    <!-- Label Area -->
-    <Panel 
-      show={label}
-      flex={inline ? null : 'row'}}
-      w={{'*': (inline ? "50%" : "100%"), 'md': (inline ? "16rem" : "100%")}}
-      border-bottom={inline ? "2" : null}
-      items="center"
-      overflow="hidden"
-      pb={inline ? "xs" : null}
-      pl={inline ? "xs" : null}
-      mr={inline ? "xs" : null}
-      mb={inline ? null : "-4px"}
-      >
-       <!-- Label here -->
-       <Label control={id} mr="xs" color="dark" xs line="20px" border="1" position="absolute" left="0">
-          {label}
-          <Text show={!!required && status==='empty'} color="warning">*</Text>
-          <StatusIcon show={!!required && !disabled && !readonly} status={status} />
-        </Label>
+  <!-- Default area -->
+  <Panel grow position="relative">
+
+    <Panel {...defaultArea}>
       
-    </Panel>
-
-    <Panel flex items='end' justify="start"
-      w={{'*': (inline ? "50%" : "100%"), 'md': "100%"}}>
-
-      <!-- Input Area -->
-      <Panel 
-        align="left" flex items="center" justify="start" w="100%">
+      <!-- LabelArea only visible in Wide an Compact variants -->
+      {#if !mini}
+      <Panel {...labelArea}>
         
-        <Panel overflow="hidden" border="1"
-          w={inline ? null : "100%"}>
-          <slot name="input-area"></slot>
-        </Panel>
+        <!-- Label here -->
+        <Label control={id} {...labelContent}>
+          {label}
+          <!-- <Text show={!!required && status==='empty'} color="warning">*</Text> -->
 
-        <!-- Helper Button 
-        -->
-        <Box show={helper} ml="sm" overflow="hidden">
-          <HelpButton id={id} label={label} bind:toggle={toggleHints}/>
-        </Box>
+          <Box {...statusArea}>
+            <StatusIcon show={!!required} status={status}/>
+          </Box>
+        </Label>
 
-        <Panel overflow="hidden">
-          <slot name="buttons-area"></slot>
-        </Panel>
+        {#if isInline}
+          <Box pb="nm" color="white">:</Box>
+        {/if}
 
       </Panel>
+      {/if}
+
+      <Panel {...inputArea}>
+        <slot name="input-area"></slot>
+
+        <!-- In  Compact and Mini variants, afterArea must overlay input -->
+        {#if !wide}
+          <Box {...afterArea}>
+            
+            <!-- In  Mini variant, status must overlay the input -->
+              {#if mini}
+              <Box  {...statusArea}>
+                <StatusIcon show={!!required} status={status}/>
+              </Box>
+            {/if}
+    
+            <slot name="after-area"></slot>
+          </Box>
+        {/if}
+      </Panel>
+
+    </Panel>
+
+    <!-- Messages & limits area-->
+    <Panel flex items="start">
       
-      <!-- Buttons Area -->
-      <Panel overflow="hidden" pb="xs">
-        <!-- <slot name="buttons-area"></slot> -->
+      <Panel grow show={wide}>
+        <MessagesArea hints={hints} messages={messages} status={status} />
+      </Panel>
+
+      <Panel show={wide}>
+        <Text xs> {limits} </Text>
       </Panel>
 
     </Panel>
 
   </Panel>
 
-  <!-- Hints && StatusArea -->
-  <Panel px='xs' py="xs" 
-    ml={{'*': (inline ? "50%" : null), 'md': (inline ? "14rem" : null)}}
-    >
-    {#if (status && messages[status])}
-      <Text xs color={colored[status]}>{messages[status]}</Text>
-    {/if}
-
-    {#if (hints && toggleHints)}
-      <Text xs color="muted">{@html hints}</Text>
-    {/if}
-  </Panel>
+  <!-- Postfix area -->
+  {#if wide}
+    <Box {...afterArea}>
+      <slot name="after-area"></slot>
+    </Box>
+  {/if}
 
 </Panel>
+{/if}
 
 <script>
-  import { Panel, Box, Text, Label } from 'svelte-stylo'
-  import LabelArea from './_LabelArea.svelte'
-  import HelpButton from './_HelpButton.svelte'
+  import { Panel, Box, Text, Label, onBreakpoint } from 'svelte-stylo'
   import StatusIcon from './_StatusIcon.svelte'
+  import MessagesArea from './_MessagesArea.svelte'
 
   export let 
+    // container props
     id,
     label = '',
-    type = 'text',
     layout = 'stacked',
-    width = null,
-    hints = '',
-    messages = {},
     status = 'empty',
     required = false,
-    disabled = false,
-    readonly = false,
-    helper = true,
-    value,
-    show = true,
-    inside = 'plain'//'cell || item || plain'
-    ;
+    focused = false,
+    messages = {},
+    hints = '',
+    limits = '',
+    variant = 'wide',
+
+    // default for all
+    show = true;
 
   let   
-    inline = (layout === 'inline'),
-    showLabel = true,
-    toggleHints = false,
-    showHints=false;
+    isInline = (layout === 'inline'),
+    isStacked = (layout === 'stacked'),
+    // variants
+    wide = variant === 'wide' || null,
+    compact = variant === 'compact' || null,
+    mini = variant === 'mini' || null;
 
-  let colored = {
-    'empty': 'muted',
-    'incomplete': 'warning',
-    'error': 'danger',
-    'valid': 'success'
-  }
+  let 
+    defaultArea = {},
+    inputArea = {},
+    labelArea = {},
+    labelContent = {},
+    statusArea = {},
+    afterArea = {};
 
-  $: if (helper !== null) {
-    toggleHints = !helper;
+  $: if (variant !== null) {
+    wide = variant === 'wide' || null,
+    compact = variant === 'compact' || null,
+    mini = variant === 'mini' || null;
+    layout = (mini || compact) ? 'stacked': layout ; 
   }
 
   $: if (layout !== null) {
-    inline = (layout === 'inline');
+    isInline = (layout === 'inline');
+    isStacked = (layout === 'stacked');
+
+    defaultArea = {
+      flex: isInline ? 'row' : null,
+      items: isInline ? 'end' : null,
+      border: "1",
+      bg: isStacked && focused ? 'light' : 'transparent'
+    }
+
+    inputArea = {
+      w: isStacked ? '100%' : onBreakpoint({'*': "50%", 'md': '70%'}),
+      mt: isStacked && !mini ? "nm" : null
+    }
+
+    labelArea = {
+      w: isStacked ? '100%' : onBreakpoint({'*': "50%", 'md': '30%'}),
+      overflow: 'hidden',      
+
+      // inline props
+      flex: isInline ? 'row' : null,
+      items: isInline ? 'center' : null,
+      mr: isInline ? "sm" : null,     
+      "border-bottom": isInline ? "3" : null, 
+      
+      // stacked props
+      position: isStacked ? "absolute" : null,
+      left: isStacked ? "2px" : null,
+      w: isStacked ? "98%" : null,
+      top: isStacked ? (focused ? '4px' : "8px") : null,
+      pl: isStacked ? (focused ? 'xs' : "0") : null,
+    }
+
+    labelContent = {
+      color: focused ? "dark" : "body",
+      "font-size": "xs",
+      pb: isInline ? "xs" : null
+    }
+
+    statusArea = {
+      // for Compact and Mini layouts
+      //position: (mini) ?  'absolute' : 'relative',
+      //right: (mini) ?  '2px' : null,
+      //top: (mini) ?  '2px' : null,
+      mr: (mini) ? '0' : null,
+      mb: (mini) ? 'xs' : null,
+
+      // when Wide layout
+      ml: (wide) ? 'nm' : null,
+    }
+
+    afterArea = {
+      // for Compact and Mini layouts
+      position: (!wide) ?  'absolute' : 'relative',
+      right: (!wide) ?  '2px' : null,
+      bottom: (!wide) ?  '2px' : null,
+
+      // when Wide layout
+      ml: (wide) ? 'nm' : null,
+    }
   }
 </script>

@@ -9,6 +9,7 @@
   <span slot="input-area">
     <InputArea 
       id={id} type={typed} layout={layed} {...field} bind:value
+      mini={variant==='mini' || null}
       on:focus={()=> {focused = true}}
       on:blur={()=> {focused = false}}
       />
@@ -22,7 +23,7 @@
 
     {#if type==='password'} 
       <Label 
-        on:click={() => { togglePassword = !togglePassword }}
+        on:click={(ev) => { togglePassword = !togglePassword; }}
         color="dark">
         <Icon 
           pointer hover round
@@ -37,7 +38,7 @@
 <script>
   import { onMount } from 'svelte'
   import { Box, Icon, Label, Input, Text, Panel, onBreakpoint } from 'svelte-stylo';
-  import FieldContainer from '../WideFieldContainer.svelte'
+  import FieldContainer from '../FieldContainer.svelte'
   import InputArea from '../_InputArea.svelte'
   import { validateIf, exceedsMaxlength, isEmpty } from '../validators'
   import { randid } from '../helpers'
@@ -59,6 +60,7 @@
     readonly = false,
     help = false,
     show = true,
+    variant = 'wide',
     value;
 
   let
@@ -92,7 +94,7 @@
     typed = type;
 
     container = {
-      inside: 'plain',
+      variant: variant,
       label: label,
       hints: hints,
       helper: help
