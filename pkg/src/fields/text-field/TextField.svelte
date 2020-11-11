@@ -1,18 +1,33 @@
-<FieldContainer
-  id={id} layout={layed} {...container} {...field} bind:value >
+<FieldContainer 
+  id={id} layout={layed} focused={focused}
+  {...container} {...field} bind:value>
 
-  <span slot="input-area">
-    <InputArea id={id} type={typed} layout={layed} {...field} bind:value />
+  <span slot="before-area">
+    before-area
   </span>
 
-  <span slot="buttons-area">
+  <span slot="input-area">
+    <InputArea 
+      id={id} type={typed} layout={layed} {...field} bind:value
+      on:focus={()=> {focused = true}}
+      on:blur={()=> {focused = false}}
+      />
+  </span>
+
+  <span slot="limits-area">
+    <Text xs> {slimits} </Text>
+  </span>
+
+  <span slot="after-area">
+
     {#if type==='password'} 
       <Label 
         on:click={() => { togglePassword = !togglePassword }}
-        lg color="dark" mr="1"
-        w="1" h="1" align="center"
-        pointer hover round>
-        {@html togglePassword ? "&ocir;" : "&osol;" } 
+        color="dark">
+        <Icon 
+          pointer hover round
+          name={togglePassword ? "show" : "hide"}
+          xl w="2" h="2"/>
       </Label>
     {/if}
   </span>
@@ -22,7 +37,7 @@
 <script>
   import { onMount } from 'svelte'
   import { Box, Icon, Label, Input, Text, Panel, onBreakpoint } from 'svelte-stylo';
-  import FieldContainer from '../FieldContainer.svelte'
+  import FieldContainer from '../WideFieldContainer.svelte'
   import InputArea from '../_InputArea.svelte'
   import { validateIf, exceedsMaxlength, isEmpty } from '../validators'
   import { randid } from '../helpers'
@@ -54,7 +69,10 @@
     togglePassword = true,
     typed = type,
     layed = layout,
-    maxch = null;
+    maxch = null,
+    focused = false,
+    len = 0,
+    slimits="";
 
   value = (value === null && initial !== null) ? initial : value;
   id = id || randid();
@@ -84,7 +102,7 @@
       width: width,
       size: size,
       initial: initial,
-      required: required,
+      required: required && !disabled && !readonly,
       disabled: disabled,
       readonly: readonly,
       status: status, 
@@ -109,6 +127,8 @@
       exceedsMaxlength,
       isEmpty
     ])
+
+    field.limits = value.length+" / "+maxlen;
   }
 
   function autoLayout(value, maxch, type) {

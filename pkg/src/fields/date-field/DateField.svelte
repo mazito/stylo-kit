@@ -3,19 +3,31 @@
 
   <span slot="input-area">
     <InputArea 
-      id={id} type={type} layout={layed} {...field} bind:value={buffer} />
+      id={id} type="text" layout={layed} {...field} bind:value={buffer} 
+      on:focus={onFocus} on:blur={onBlur}
+      />
   </span>
 
+  <span slot="buttons-area">
+      <Button>
+        <Icon name=""/>
+      </Button>
+  </span>
+ 
 </FieldContainer>
 
 <script>
-  import { onMount } from 'svelte'
-  import { Box, Icon, Label, Input, Text, Panel, onBreakpoint } from 'svelte-stylo';
+  import { onMount, tick } from 'svelte'
+  import { Box, Icon, Label, Input, Text, Panel, Button, onBreakpoint } from 'svelte-stylo';
+  
+  //import FieldContainer from '../FieldContainer.svelte'
+  //import InputArea from '../_InputArea.svelte'
   import FieldContainer from '../FieldContainer.svelte'
   import InputArea from '../_InputArea.svelte'
-  import { validateIf, exceedsMax, exceedsMin, isEmpty } from '../validators'
+
+  import { validateIf, exceedsMax, exceedsMin, isEmpty, notANumber } from '../validators'
   import { randid, autoLayout } from '../helpers'
-  import { formatNumber } from './formats';
+  import { formatDate } from './formats';
 
   export let
     show = true,
@@ -46,13 +58,16 @@
   let
     container = {}, 
     field = {},
-    me = null,
+    focused = false,
     typed = type,
     layed = layout,
+    previous = null,
     maxch = null;
 
-  value = (value === null && initial !== null) ? initial : value;
   id = id || randid();
+
+  value = (value === null && initial !== null) ? initial : value;
+  buffer = value;
 
   onMount(() => {
     // width of input box in chars
@@ -64,7 +79,7 @@
 
   $: if ($$props) {
 
-    layed = autoLayout(value, maxch, type, layout);
+    layed = autoLayout(buffer, maxch, type, layout);
 
     typed = type;
 
@@ -87,34 +102,52 @@
       max: max,
       min: min      
     }
+
+    field = validate(value, field);
   };
 
-  $: if (value !== null) {
+  $: if (focused && buffer !== null) {
+    
+    //console.log("NumberField entered $buffer", buffer);
 
-    layed = autoLayout(value, maxch, type, layout);
+    layed = autoLayout(buffer, maxch, type, layout);
 
     // field.width = (layed==='stacked') ? '100%' : width;
 
     field.status = 'valid'; // reset before validations
 
-    field = validateIf(value, field, [
-      exceedsMax,
-      exceedsMin,
-      isEmpty
-    ])
+    const v = buffer;//localToNumber(buffer);
 
-    console.log("NumberField formatted=", formatNumber(value, format))
+    field =  validate(v, field);
+
+    //console.log("NumberField validateIf v,field=", v, field)
   }
 
   function onFocus(ev) {
     buffer = value;
-    console.log("NumberField onFocus value,buffer=", value, buffer);
+    focused = true;
+    //console.log("NumberField onFocus value,buffer=", value, buffer);
   }
 
   function onBlur(ev) {
+    focused = false;
+
     value = buffer;
-    buffer = formatNumber(value, format)
-    console.log("NumberField onBlur value,buffer=", value, buffer);
+    
+    field = validate(value, field);
+    
+    tick().then(() => {
+      buffer = formatDate(value, format);
+      //console.log("NumberField onBlur value,buffer=", value, buffer);
+    })
   }
 
+  function validate(value, field) {
+    return (validateIf(value, field, [
+        //exceedsMax,
+        //exceedsMin,
+        isEmpty
+      ])
+    );
+  }
 </script>

@@ -1,12 +1,7 @@
 <Heading lg>NumberField Demo</Heading>
 
 <Panel bg="surface" py="nm">
-  <NumberField {...field} bind:value={value}/>
-  <NumberField {...field} bind:value={value}/>
-  <NumberField {...field} bind:value={value}/>
-  <NumberField {...field} bind:value={value}/>
-  <NumberField {...field} bind:value={value}/>
-  <NumberField {...field} bind:value={value}/>
+  <DateField {...field} bind:value={value}/>
 </Panel>
 
 <Panel my="nm" p="nm" border="3">
@@ -45,14 +40,14 @@
 
 <script>
   import { Heading, Label, Input, Panel, Box, Select } from 'svelte-stylo'
-  import { TextField, NumberField, Chip } from 'svelte-stylo-kit'
+  import { DateField, Chip } from 'svelte-stylo-kit'
   import SharedOptions from './SharedOptions.svelte'
 
   let field = {
     label: 'Precio total ($)',
     type: 'decimal',
     layout: 'inline',
-    initial: 12.39,
+    initial: "2020-12-05",
     hints: 'Some useful hint here ...',
     width: '12ch',
     status: 'valid',

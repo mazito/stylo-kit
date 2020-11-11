@@ -1,38 +1,51 @@
 <Panel w="100%">
 
-  <Panel flex={inline ? 'row' : "column"}  items='end'>
+  <Panel flex={inline ? 'row' : "column"}  items='center' border-bottom="2px solid #fff">
 
     <!-- Label Area -->
-    <Panel 
+    <Panel nborder="1"
       show={label}
-      flex={inline ? null : 'row'}}
-      w={{'*': (inline ? "50%" : "100%"), 'md': (inline ? "16rem" : "100%")}}
+      flex={inline ? "row" : 'row'}}
+      w={{'*': (inline ? "50%" : "100%"), 'md': (inline ? "50%" : "100%")}}
       border-bottom={inline ? "2" : null}
       items="center"
       overflow="hidden"
-      pb={inline ? "xs" : null}
-      pl={inline ? "xs" : null}
-      mr={inline ? "xs" : null}
-      mb={inline ? null : "-4px"}
+      p="sm"
+      npb={inline ? "0" : null}
+      npl={inline ? "xs" : null}
+      nmr={inline ? "xs" : null}
+      nmb={inline ? null : "-6px"}
       >
        <!-- Label here -->
-       <Label control={id} mr="xs" color="dark" xs line="20px" border="1" position="absolute" left="0">
+       <Label control={id} mr="xs" color="body" sm nobold>
           {label}
-          <Text show={!!required && status==='empty'} color="warning">*</Text>
+          <Text show={!!required} color="warning">*</Text>
+
           <StatusIcon show={!!required && !disabled && !readonly} status={status} />
+
+          <!-- Hints && StatusArea -->
+          <Panel nopx='xs'>
+            {#if (status && messages[status])}
+              <Text xs color={colored[status]}>{messages[status]}</Text>
+            {/if}
+
+            {#if (hints && toggleHints)}
+              <Text xs color="muted">{@html hints}</Text>
+            {/if}
+          </Panel>
+
         </Label>
       
     </Panel>
 
     <Panel flex items='end' justify="start"
-      w={{'*': (inline ? "50%" : "100%"), 'md': "100%"}}>
+      w={{'*': (inline ? "50%" : "100%"), 'md': "50%"}} border-bottom="1px solid #fff">
 
       <!-- Input Area -->
       <Panel 
-        align="left" flex items="center" justify="start" w="100%">
+        align="left" noflex items="center" justify="start" w="100%">
         
-        <Panel overflow="hidden" border="1"
-          w={inline ? null : "100%"}>
+        <Panel grow overflow="hidden" w="100%">
           <slot name="input-area"></slot>
         </Panel>
 
@@ -42,15 +55,11 @@
           <HelpButton id={id} label={label} bind:toggle={toggleHints}/>
         </Box>
 
-        <Panel overflow="hidden">
-          <slot name="buttons-area"></slot>
-        </Panel>
-
       </Panel>
       
       <!-- Buttons Area -->
       <Panel overflow="hidden" pb="xs">
-        <!-- <slot name="buttons-area"></slot> -->
+          <slot name="buttons-area"></slot>
       </Panel>
 
     </Panel>
@@ -58,9 +67,7 @@
   </Panel>
 
   <!-- Hints && StatusArea -->
-  <Panel px='xs' py="xs" 
-    ml={{'*': (inline ? "50%" : null), 'md': (inline ? "14rem" : null)}}
-    >
+  <Panel px='xs' show={false}>
     {#if (status && messages[status])}
       <Text xs color={colored[status]}>{messages[status]}</Text>
     {/if}

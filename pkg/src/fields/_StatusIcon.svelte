@@ -1,21 +1,21 @@
-{#if show && status && symbols[status]}
-<Label sm bold {...symbolProps}>
-  {@html symbols[status].content}
-</Label>
+{#if show && status}
+  <Box>
+    <Icon {...symbolProps} />
+  </Box>
 {/if}
 
 <script>
-  import { Label, Input, Text, Textarea, Panel } from 'svelte-stylo';
+  import { Icon, Box } from 'svelte-stylo';
 
   export let
     status = 'empty',
     show = true;
 
-  let symbols = {
-    'empty': { color: 'muted', content: ''},
-    'incomplete': { color: 'muted', content: ''},
-    'error': { color: 'danger', content:  '!'},
-    'valid': { color: 'success', content:  '&check;'}
+  let colored = {
+    'empty': 'muted',
+    'incomplete': 'muted',
+    'error': 'danger',
+    'valid': 'success'
   }
 
   let symbolProps = {};
@@ -26,11 +26,11 @@
       //position: "absolute", 
       //right: 0,
       //top: "2px",
-      w: "2ch", 
       align: "center", 
       pb: "xs",
-      bg: "surface", 
-      color: (symbols[status] ? symbols[status].color : null)
+      size: "nm",
+      name: status, 
+      color: (colored[status] || null)
     }
   }
 </script>

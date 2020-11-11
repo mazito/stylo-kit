@@ -24,8 +24,8 @@
 
     {:else}
       <Input 
-        on:click on:change on:focus on:blur
-        id={id} type={type} {...inputProps} bind:value={value} />
+      on:click on:change on:focus on:blur
+      id={id} type={type} {...inputProps} bind:value={value} />
 
     {/if}
   {/if}
@@ -75,19 +75,16 @@
     //inputProps.disabled = (state==='disabled')
     inputProps = {
       "font-size": "md",
+      bg: "light",
       border: "none",
-      mt: isArea ? "nm" : "sm", 
-      pt: isArea ? "xs" : "sm", 
-      pb: isArea ? 0 : "xs",
-      line: "20px",
+      // pt: isArea ? "xs" : "sm", 
+      p: isArea ? 0 : "nm",
       width: isArea ? "100%" : width,
       color: colors[state],
       disabled: (state==='disabled'),
       underlined: isArea ? true : null,
-      "border-bottom": isArea ? null : borders[state],
-      "bg": "transparent",
-      "focus-bg": "light",
-      width: width || (size ? size+'ch' : null),
+      //"border-bottom": isArea ? null : borders[state],
+      "focus-bg": "gray300"
     }
   }
 

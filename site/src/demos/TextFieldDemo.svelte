@@ -1,5 +1,19 @@
 <Heading lg>TextField Demo</Heading>
 
+<Panel border="1" rounded="sm">
+
+  <Heading thin nm mb="nm" m="nm">Encabezado de seccion</Heading>
+
+  <Panel m="nm">
+    <TextField {...field} bind:value={value}/>
+  </Panel>
+
+</Panel>
+
+<Panel my="nm" p="nm" border="1">
+  <Label mr="sm">Value: </Label>{value}
+</Panel>
+
 <SharedOptions 
   bind:field={field} 
   types={['text', 'email', 'password', 'area']}>
@@ -14,29 +28,17 @@
 
 </SharedOptions>
 
-<Panel border="1">
-
-  <Panel noborder-bottom="2px solid #aaa" pt="md" pb="0" bg="surface">
-    <TextField {...field} bind:value={value}/>
-  </Panel>
-
-</Panel>
-
-<Panel my="nm" p="nm" border="1">
-  <Label mr="sm">Value: </Label>{value}
-</Panel>
-
 <script>
   import { Heading, Label, Input, Panel, Box, Select } from 'svelte-stylo'
   import { TextField, Chip } from 'svelte-stylo-kit'
   import SharedOptions from './SharedOptions.svelte'
 
   let field = {
-    label: 'A Text Field',
+    label: 'Supervisor de calidad',
     type: 'text',
-    layout: 'inline',
-    initial: 'We must',
-    hints: 'Some useful hint here ...',
+    layout: 'stacked',
+    initial: 'Algo',
+    hints: 'Some useful hint ...',
     width: '16ch',
     maxlen: 10,
     status: 'valid',
@@ -48,7 +50,7 @@
       empty: 'This field is empty, please fill it',
       incomplete: 'It\'s still incomplete, please go on',
       error: 'Mmmm, something is wrong ',
-      valid: 'It\'s all good man !'
+      valid: ''
     }
   };
 

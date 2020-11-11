@@ -5,7 +5,7 @@
   </Panel>
 
   <Panel 
-    flex="column" 
+    nflex="column" 
     items="start" 
     justify="start">
 
@@ -23,7 +23,7 @@
 
     </Panel>
 
-    <Panel grow w="100%" px="nm" nopy="nm">
+    <Panel grow w="100%" px="nm" py="nm">
       <svelte:component this={theDemo}/>
     </Panel>
 
@@ -36,15 +36,17 @@
   import { customizedTheme } from './customized-theme'
   import TextFieldDemo from './demos/TextFieldDemo.svelte'
   import NumberFieldDemo from './demos/NumberFieldDemo.svelte'
+  import DateFieldDemo from './demos/DateFieldDemo.svelte'
 
   customizedTheme();
 
   let demos = [
     { title: 'TextField', component: TextFieldDemo},
-    { title: 'NumberField', component: NumberFieldDemo}
+    { title: 'NumberField', component: NumberFieldDemo},
+    { title: 'DateField', component: DateFieldDemo}
   ]
 
-  let theDemo = demos[1].component;
+  let theDemo = demos[0].component;
 
   function clicked(demo) {
     theDemo = demo.component;
@@ -53,7 +55,7 @@
 </script>
 
 <style>
-	body {
+	:global(body) {
 		text-align: left;
 		margin: 0;
     padding: 0;

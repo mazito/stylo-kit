@@ -13,8 +13,12 @@
 <script>
   import { onMount, tick } from 'svelte'
   import { Box, Icon, Label, Input, Text, Panel, onBreakpoint } from 'svelte-stylo';
+  
+  //import FieldContainer from '../FieldContainer.svelte'
+  //import InputArea from '../_InputArea.svelte'
   import FieldContainer from '../FieldContainer.svelte'
   import InputArea from '../_InputArea.svelte'
+
   import { validateIf, exceedsMax, exceedsMin, isEmpty, notANumber } from '../validators'
   import { randid, autoLayout } from '../helpers'
   import { formatNumber, localToNumber, numberToLocal } from './formats';
@@ -98,7 +102,7 @@
 
   $: if (focused && buffer !== null) {
     
-    console.log("NumberField entered $buffer", buffer);
+    //console.log("NumberField entered $buffer", buffer);
 
     layed = autoLayout(buffer, maxch, type, layout);
 
@@ -110,7 +114,7 @@
 
     field =  validate(v, field);
 
-    console.log("NumberField validateIf v,field=", v, field)
+    //console.log("NumberField validateIf v,field=", v, field)
   }
 
   function onFocus(ev) {
