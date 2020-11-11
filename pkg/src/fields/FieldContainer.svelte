@@ -43,7 +43,7 @@
       </Panel>
       {/if}
 
-      <Panel grow {...inputArea}>
+      <Panel {...inputArea}>
         <slot name="input-area"></slot>
 
         <!-- In  Compact and Mini variants, afterArea must overlay input -->
@@ -65,13 +65,13 @@
     </Panel>
 
     <!-- Messages & limits area-->
-    <Panel flex items="start">
+    <Panel flex items="start" h="1.25" show={wide}>
       
-      <Panel grow show={wide}>
+      <Panel grow show={wide && focused}>
         <MessagesArea hints={hints} messages={messages} status={status} />
       </Panel>
 
-      <Panel show={wide}>
+      <Panel show={wide && focused}>
         <Text xs> {limits} </Text>
       </Panel>
 
@@ -148,12 +148,12 @@
     }
 
     inputArea = {
-      w: isStacked ? '100%' : onBreakpoint({'*': "50%", 'md': '70%'}),
+      w: isStacked ? '100%' : onBreakpoint({'*': "50%", 'md': 'auto'}),
       mt: isStacked && !mini ? "nm" : null
     }
 
     labelArea = {
-      w: isStacked ? '100%' : onBreakpoint({'*': "50%", 'md': '30%'}),
+      w: isStacked ? '98%' : onBreakpoint({'*': "50%", 'md': '32ch'}),
       overflow: 'hidden',      
 
       // inline props
@@ -167,7 +167,6 @@
       // stacked props
       position: isStacked ? "absolute" : null,
       left: isStacked ? "2px" : null,
-      w: isStacked ? "98%" : null,
       top: isStacked ? (focused ? '4px' : "8px") : null,
       pl: isStacked ? (focused ? 'xs' : "0") : null,
     }
@@ -196,7 +195,7 @@
       bottom: (!wide) ?  '2px' : null,
 
       // when Wide layout
-      ml: (wide) ? 'nm' : null,
+      ml: (wide) ? 'sm' : null,
     }
   }
 </script>

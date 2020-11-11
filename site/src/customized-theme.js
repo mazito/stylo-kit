@@ -11,6 +11,7 @@ theme.icons = {
   prefix: 'mdi-',
   files: {
     // Field status
+    'empty': 'asterisk',
     'valid': 'check-bold',
     'error': 'alert-octagon-outline',
 

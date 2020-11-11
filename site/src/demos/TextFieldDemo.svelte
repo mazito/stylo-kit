@@ -1,10 +1,12 @@
 <Heading lg>TextField Demo</Heading>
 
-<Panel border="1" rounded="sm">
+<Panel noborder="1" rounded="sm">
 
   <Heading thin nm mb="nm" m="nm">Encabezado de seccion</Heading>
 
-  <Panel m="nm">
+  <Panel nm="nm">
+    <TextField {...field} bind:value={value}/>
+    <TextField {...field} bind:value={value}/>
     <TextField {...field} bind:value={value}/>
   </Panel>
 
@@ -38,10 +40,10 @@
     type: 'text',
     layout: 'inline',
     variant: 'wide',
-    initial: 'Algo',
+    initial: '',
     hints: 'Some useful hint ...',
-    width: '56ch',
-    maxlen: 10,
+    width: '32ch',
+    maxlen: 12,
     status: 'valid',
     required: true,
     disabled: false,

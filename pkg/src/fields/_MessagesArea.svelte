@@ -1,11 +1,11 @@
 {#if show}
-  <Panel flex items="center" w="100%" py="xs">
+  <Panel flex items="center" w="100%" pt="xs">
 
     {#if ((isError || isValid) && messages[status])}
       <Text xs color={colored[status]}>{messages[status]}</Text>
     {/if}
 
-    {#if (hints)}
+    {#if (!(isError || isValid) && hints)}
       <Text xs color="muted">{@html hints}</Text>
     {/if}
 

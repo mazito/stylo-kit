@@ -37,7 +37,7 @@
 
 <script>
   import { onMount } from 'svelte'
-  import { Box, Icon, Label, Input, Text, Panel, onBreakpoint } from 'svelte-stylo';
+  import { Button, Box, Icon, Label, Input, Text, Panel, onBreakpoint } from 'svelte-stylo';
   import FieldContainer from '../FieldContainer.svelte'
   import InputArea from '../_InputArea.svelte'
   import { validateIf, exceedsMaxlength, isEmpty } from '../validators'
@@ -130,6 +130,7 @@
       isEmpty
     ])
 
+    field.status = value.trim().length ? field.status : 'empty';
     field.limits = value.length+" / "+maxlen;
   }
 

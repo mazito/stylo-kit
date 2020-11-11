@@ -9,10 +9,16 @@
     status = 'empty',
     show = true;
 
-  let colored = {
+    let colored = {
     'empty': 'warning',
     'error': 'danger',
     'valid': 'success'
+  }
+
+  let sized = {
+    'empty': 'xs',
+    'error': 'sm',
+    'valid': 'sm'
   }
 
   let symbolProps = {};
@@ -25,7 +31,7 @@
       //top: "2px",
       align: "center", 
       //pb: "xs",
-      size: "sm",
+      size: (sized[status] || "sm"),
       name: status, 
       color: (colored[status] || null)
     }

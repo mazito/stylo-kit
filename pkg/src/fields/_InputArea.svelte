@@ -80,7 +80,7 @@
       "font-size": "md",
       border: "none",
       mt: isArea ? "nm" : "sm", 
-      pt: isArea ? "xs" : (mini ? "0" : "sm"), 
+      pt: isArea ? "2px" : (mini ? "0" : "sm"), 
       pb: isArea ? 0 : "xs",
       line: "20px",
       width: isArea ? "100%" : width,
