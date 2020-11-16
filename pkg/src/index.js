@@ -5,9 +5,11 @@ import MenuItem from './menu/MenuItem.svelte'
 import MenuDivider from './menu/MenuDivider.svelte'
 import MenuTitle from './menu/MenuTitle.svelte'
 import Chip from './chips/Chip.svelte'
-import TextField from './fields/text-field/TextField.svelte'
-import NumberField from './fields/number-field/NumberField.svelte'
-import DateField from './fields/date-field/DateField.svelte'
+import TextField from './fields/text/TextField.svelte'
+import NumberField from './fields/numbers/NumberField.svelte'
+import DateField from './fields/date-time/DateField.svelte'
+import CheckField from './fields/checks/CheckField.svelte'
+import OptionsField from './fields/options/OptionsField.svelte'
 
 export {
   // Kit components
@@ -20,5 +22,7 @@ export {
   Chip,
   TextField, 
   NumberField,
-  DateField
+  DateField,
+  CheckField,
+  OptionsField
 }

@@ -4,18 +4,18 @@ Llamamos controles (porque "controlan" como funciona el formulario) a **todos lo
 
 1. Entrada/salida (Fields): su objetivo es permitir el ingreso de un valor (o de varios) o mostrar un valor existente. Siempre están vinculados a un dato especifico. Casos: 
 
-   - Texto, Ok
-   - Numero, Ok
-   - Fecha, 
-   - Hora, 
-   - Tildar, 
-   - Opciones, 
-   - Item, 
-   - QR, 
-   - Fotos, 
-   - Adjuntos, 
-   - Gps, 
-   - Gráfico.
+   - Texto, Ok - input/keyb
+   - Numero, Ok - input/keyb
+   - Fecha, - input/keyb/widget
+   - Hora, - input/keyb/widget
+   - Tildar, - widget
+   - Opciones, - widget
+   - Item, - widget
+   - QR, - widget
+   - Fotos, -widget
+   - Adjuntos, -widget
+   - Gps, - widget
+   - Gráfico. - widget
 
 3. Cálculos: su objetivo es generar un valor a partir de un conjunto de valores existentes en el formulario. Siempre están vinculados a un dato especifico que contiene su resultado. No permiten modificar el valor generado. Casos: 
 
@@ -28,3 +28,19 @@ Llamamos controles (porque "controlan" como funciona el formulario) a **todos lo
 8. Asignaciones: su objetivo es copiar valores a ciertos controles a partir de cambios en los valores de otros controles. Casos: Copiar Campo (Nuevo !), Copiar Columnas, Copiar Filas (antes Filtrar las filas).
 
 9. Acciones: su objetivo es realizar cierta acciones frente a un cambio. Casos: Ticket, Alerta, Solicitud, Fusión PDF,Actualizar Lista.
+
+**Grip only Controls**
+
+NOT included en Stylo-Kit
+
+~~~
+    // This are Grip only controls
+    // Action fields (plugins)
+    // { title: 'CalculatedField', component: null },
+    // { title: 'TicketPlugin', component: null },
+    // { title: 'AlertPlugin', component: null },
+    // { title: 'ServiceCallPlugin', component: null },
+    // { title: 'LocalStockPlugin', component: null },
+    // { title: 'UpdateListPlugin', component: null },
+    // { title: 'PdfFusionPlugin', component: null },
+~~

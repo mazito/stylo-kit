@@ -1,4 +1,4 @@
-<Heading lg>DateField Demo</Heading>
+<Heading lg>NumberField Demo</Heading>
 
 <Panel bg="surface" py="nm">
   <DateField {...field} bind:value={value}/>
@@ -10,7 +10,7 @@
 
 <SharedOptions 
   bind:field={field} 
-  types={['date']}>
+  types={['integer', 'decimal', 'tel']}>
 
   <Panel mb="xs">
     <Chip>min</Chip> 
@@ -44,25 +44,26 @@
   import SharedOptions from './SharedOptions.svelte'
 
   let field = {
-    label: 'Fecha',
-    type: 'date', 
+    label: 'Precio total ($)',
+    type: 'decimal',
     layout: 'inline',
-    variant: 'wide',
     initial: "2020-12-05",
-    hints: 'Please input a date or select it using calendar',
-    size: '12',
+    hints: 'Some useful hint here ...',
+    width: '12ch',
     status: 'valid',
     required: true,
     disabled: false,
     readonly: false,
+    helper: false,
     messages: {
-      error: '',
+      empty: 'This field is empty, please fill it',
+      incomplete: 'It\'s still incomplete, please go on',
+      error: 'Mmmm, something is wrong ',
       valid: ''
     },
-
-    min: '',
-    max: '',
-    format: '##-##-####',
+    min: 10,
+    max: 100,
+    format: '$ ###,##'
   };
 
   let value = null;

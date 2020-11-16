@@ -1,17 +1,21 @@
 <FieldContainer
-  id={id} layout={layed} {...container} {...field} bind:value >
+  id={id} layout={layed} {...container} {...field} focused={focused} bind:value >
 
   <span slot="input-area">
-    <InputArea 
-      id={id} type="text" layout={layed} {...field} bind:value={buffer} 
-      on:focus={onFocus} on:blur={onBlur}
-      />
-  </span>
-
-  <span slot="buttons-area">
-      <Button>
-        <Icon name=""/>
-      </Button>
+    <Panel flex items="end">
+      <InputArea 
+        id={id} type="text" layout={layed} {...field} bind:value={buffer} 
+        mini={variant==='mini' || null}
+        on:focus={()=> {focused = true}}
+        on:blur={()=> {focused = false}}
+        />
+      <Box ml="sm" pr="sm">
+        <Icon name="calendar" xl/>
+      </Box>
+    </Panel>
+    </span>
+    
+    <span slot="after-area">
   </span>
  
 </FieldContainer>
@@ -34,10 +38,11 @@
     //
     id = null,
     label = '',
-    type = 'decimal',
+    type = 'date',
     layout = 'inline',
+    variant = 'wide',
     width = null,
-    size='nm',
+    size= 12,
     //
     help = null,
     hints = '',
@@ -69,25 +74,15 @@
   value = (value === null && initial !== null) ? initial : value;
   buffer = value;
 
-  onMount(() => {
-    // width of input box in chars
-    // we assumed a char width of 16px to calculate it 
-    // and apply a safety value of 10 chars to change before end
-    let bounds = document.getElementById(id).getBoundingClientRect();
-    maxch = parseInt(bounds.width / 16 * 0.75) ;
-  })
-
   $: if ($$props) {
-
-    layed = autoLayout(buffer, maxch, type, layout);
 
     typed = type;
 
     container = {
-      inside: 'plain',
       label: label,
       hints: hints,
-      helper: help
+      helper: help,
+      variant: variant
     }
 
     field = {
@@ -108,12 +103,6 @@
 
   $: if (focused && buffer !== null) {
     
-    //console.log("NumberField entered $buffer", buffer);
-
-    layed = autoLayout(buffer, maxch, type, layout);
-
-    // field.width = (layed==='stacked') ? '100%' : width;
-
     field.status = 'valid'; // reset before validations
 
     const v = buffer;//localToNumber(buffer);
@@ -126,7 +115,6 @@
   function onFocus(ev) {
     buffer = value;
     focused = true;
-    //console.log("NumberField onFocus value,buffer=", value, buffer);
   }
 
   function onBlur(ev) {

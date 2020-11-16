@@ -1,7 +1,7 @@
-<Heading lg>DateField Demo</Heading>
+<Heading lg>CheckField Demo</Heading>
 
 <Panel bg="surface" py="nm">
-  <DateField {...field} bind:value={value}/>
+  <CheckField {...field} bind:value={value}/>
 </Panel>
 
 <Panel my="nm" p="nm" border="3">
@@ -10,7 +10,7 @@
 
 <SharedOptions 
   bind:field={field} 
-  types={['date']}>
+  types={['integer', 'decimal', 'tel']}>
 
   <Panel mb="xs">
     <Chip>min</Chip> 
@@ -40,29 +40,24 @@
 
 <script>
   import { Heading, Label, Input, Panel, Box, Select } from 'svelte-stylo'
-  import { DateField, Chip } from 'svelte-stylo-kit'
+  import { CheckField, Chip } from 'svelte-stylo-kit'
   import SharedOptions from './SharedOptions.svelte'
 
   let field = {
-    label: 'Fecha',
-    type: 'date', 
+    label: 'Tildar (Si/No)',
+    type: 'check',
     layout: 'inline',
-    variant: 'wide',
-    initial: "2020-12-05",
-    hints: 'Please input a date or select it using calendar',
-    size: '12',
-    status: 'valid',
+    initial: true,
+    hints: 'Some useful hint here ...',
     required: true,
     disabled: false,
     readonly: false,
     messages: {
-      error: '',
+      empty: 'This field is empty, please fill it',
+      incomplete: 'It\'s still incomplete, please go on',
+      error: 'Mmmm, something is wrong ',
       valid: ''
     },
-
-    min: '',
-    max: '',
-    format: '##-##-####',
   };
 
   let value = null;

@@ -1,14 +1,15 @@
-<FieldContainer
-  id={id} layout={layed} {...container} {...field} bind:value >
+{#if show}
+  <FieldContainer {id} {layout} {...container} {...field} bind:value >
 
-  <span slot="input-area">
-    <InputArea 
-      id={id} type={type} layout={layed} {...field} bind:value={buffer} 
-      on:focus={onFocus} on:blur={onBlur}
-      />
-  </span>
+    <span slot="input-area">
+      <InputArea 
+        {id} {type} {layout} {...field} bind:value={buffer} 
+        on:focus={onFocus} on:blur={onBlur}
+        />
+    </span>
 
-</FieldContainer>
+  </FieldContainer>
+{/if}
 
 <script>
   import { onMount, tick } from 'svelte'
@@ -24,16 +25,19 @@
   import { formatNumber, localToNumber, numberToLocal } from './formats';
 
   export let
-    show = true,
+    show = true, // show/hide this field
     //
     id = null,
     label = '',
-    type = 'decimal',
+    type = 'decimal', // integer, decimal, phone
+    size = 10, // size in chars of the field
+    initial = '',
+    value,
+    // 
     layout = 'inline',
-    width = null,
-    size='nm',
+    variant = 'wide',
+    width = null, // can be used instead of size, ex: '100%'
     //
-    help = null,
     hints = '',
     status = 'empty',
     messages = {},
@@ -41,12 +45,12 @@
     required = false,
     disabled = false,
     readonly = false,
-    // number props
-    initial = '',
-    max = null, min = null,
+
+    // number only props
+    max = null, 
+    min = null,
     format = '',
     //
-    value,
     buffer;
 
   let

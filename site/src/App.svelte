@@ -37,16 +37,34 @@
   import TextFieldDemo from './demos/TextFieldDemo.svelte'
   import NumberFieldDemo from './demos/NumberFieldDemo.svelte'
   import DateFieldDemo from './demos/DateFieldDemo.svelte'
+  import TimeFieldDemo from './demos/TimeFieldDemo.svelte'
+  import CheckFieldDemo from './demos/CheckFieldDemo.svelte'
+  import OptionsFieldDemo from './demos/OptionsFieldDemo.svelte'
+  import ListItemFieldDemo from './demos/ListItemFieldDemo.svelte'
 
   customizedTheme();
 
   let demos = [
+    // Input fields
     { title: 'TextField', component: TextFieldDemo},
     { title: 'NumberField', component: NumberFieldDemo},
-    { title: 'DateField', component: DateFieldDemo}
+    { title: 'DateField', component: DateFieldDemo},
+    { title: 'TimeField', component: null },
+    { title: 'CheckField', component: CheckFieldDemo },
+    { title: 'OptionsField', component: OptionsFieldDemo },
+    { title: 'ListItemField', component: null },
+
+    // pending
+    { title: 'QRCodeField', component: null },
+    { title: 'PhotosField', component: null },
+    { title: 'FilesField', component: null },
+
+    // Pure display fields
+    { title: 'MapField', component: null },
+    { title: 'ChartsField', component: null },
   ]
 
-  let theDemo = demos[0].component;
+  let theDemo = demos[5].component;
 
   function clicked(demo) {
     theDemo = demo.component;
