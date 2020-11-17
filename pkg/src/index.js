@@ -10,8 +10,11 @@ import NumberField from './fields/numbers/NumberField.svelte'
 import DateField from './fields/date-time/DateField.svelte'
 import CheckField from './fields/checks/CheckField.svelte'
 import OptionsField from './fields/options/OptionsField.svelte'
+import FieldProps from './fields/properties.js'
 
 export {
+  FieldProps,
+
   // Kit components
   Drawer, 
   IconButton,

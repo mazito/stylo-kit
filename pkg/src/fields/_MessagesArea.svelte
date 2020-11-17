@@ -1,14 +1,18 @@
 {#if show}
   <Panel flex items="center" w="100%" pt="xs">
 
-    {#if ((isError || isValid) && messages[status])}
-      <Text xs color={colored[status]}>{messages[status]}</Text>
-    {/if}
-
-    {#if (!(isError || isValid) && hints)}
+    {#if status==='empty' && hints}
       <Text xs color="muted">{@html hints}</Text>
     {/if}
 
+    {#if (isError && messages['error'])}
+      <Text xs color={colored['error']}>{messages['error']}</Text>
+    {/if}
+
+    {#if (isValid && messages['valid'])}
+      <Text xs color={colored['valid']}>{messages['valid']}</Text>
+    {/if}
+    
   </Panel>
 {/if}
 
@@ -36,7 +40,7 @@
   $: if (status !== null) {
     isError = (status === 'error');
     isValid = (status === 'valid');
-    hintsOn = !isError && !isValid 
-              && !messages[status] && !messages[status].length;
+    // hintsOn = !isError && !isValid 
+    //           && !messages[status] && !messages[status].length;
   }
 </script>

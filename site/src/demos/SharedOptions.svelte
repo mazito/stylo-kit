@@ -18,37 +18,6 @@
   </Panel>
 
   <Panel mb="xs">
-    <Chip>layout</Chip> 
-    <Select 
-    p="xs"
-    options={[
-      {value:'stacked', text: 'stacked'},
-      {value:'inline', text: 'inline'},
-      ]}
-    bind:value={field.layout}
-    />
-    &nbsp;
-    <Chip>variant</Chip> 
-    <Select 
-      p="xs"
-      options={[
-          {value:'wide', text: 'wide'},
-          {value:'compact', text: 'compact'},
-          {value:'mini', text: 'mini'},
-        ]}
-      bind:value={field.variant}
-    />
-  </Panel>
-
-  <Panel mb="xs">
-    <Chip>width</Chip> 
-    <Input 
-      p="xs"
-      bind:value={field.width}
-      />
-  </Panel>
-
-  <Panel mb="xs">
     <Chip>initial</Chip> 
     <Input 
       p="xs"
@@ -57,6 +26,14 @@
   </Panel>
 
   <hr>
+
+  <Panel mb="xs">
+    <Chip>size</Chip> 
+    <Input 
+      p="xs"
+      bind:value={field.size}
+      />
+  </Panel>
 
   <Panel mb="xs">
     <Chip>required</Chip> 
@@ -95,6 +72,39 @@
   </Panel>
 
   <hr>
+  
+  <Panel mb="xs">
+    <Chip>layout</Chip> 
+    <Select 
+    p="xs"
+    options={[
+      {value:'stacked', text: 'stacked'},
+      {value:'inline', text: 'inline'},
+      ]}
+    bind:value={field.layout}
+    />
+    &nbsp;
+    <Chip>variant</Chip> 
+    <Select 
+      p="xs"
+      options={[
+          {value:'wide', text: 'wide'},
+          {value:'compact', text: 'compact'},
+          {value:'mini', text: 'mini'},
+        ]}
+      bind:value={field.variant}
+    />
+  </Panel>
+
+  <Panel mb="xs">
+    <Chip>width</Chip> 
+    <Input 
+      p="xs"
+      bind:value={field.width}
+      />
+  </Panel>
+
+  <hr>
   <!-- <Panel mb="xs">
     <Chip>helper</Chip> 
     <Select 
@@ -121,37 +131,22 @@
       p="xs"
       options={[
         {value:'empty', text: 'empty'},
-        {value:'incomplete', text: 'incomplete'},
         {value:'error', text: 'error'},
         {value:'valid', text: 'valid'},
         {value:'null', text: 'null'},
-        ]}
+      ]}
       bind:value={field.status}
     />
   </Panel>
 
   <Panel mb="xs">
-    <Chip>messages.empty</Chip> 
+    <Chip>messages.errors</Chip> 
     <Input 
       p="xs"
-      bind:value={field.messages.empty}
+      bind:value={field.messages.errors}
       />
   </Panel>
 
-  <Panel mb="xs">
-    <Chip>messages.incomplete</Chip> 
-    <Input 
-      p="xs"
-      bind:value={field.messages.incomplete}
-      />
-  </Panel>
-  <Panel mb="xs">
-    <Chip>messages.error</Chip> 
-    <Input 
-      p="xs"
-      bind:value={field.messages.error}
-      />
-  </Panel>
   <Panel mb="xs">
     <Chip>messages.valid</Chip> 
     <Input 

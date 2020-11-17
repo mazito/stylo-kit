@@ -1,22 +1,23 @@
-<FieldContainer 
-  id={id} layout={layed} focused={focused}
-  {...container} {...field} bind:value>
+<FieldContainer
+  {id} {layout} {focused} 
+  {...container} 
+  {...field} 
+  bind:value>
 
   <span slot="before-area">
     <!-- before-area -->
   </span>
 
   <span slot="input-area">
-    <InputArea 
-      id={id} type={typed} layout={layed} {...field} bind:value
-      mini={variant==='mini' || null}
+    <InputArea {id} {type} {layout} {...field} bind:value
+      mini={props.variant==='mini' || null}
       on:focus={()=> {focused = true}}
       on:blur={()=> {focused = false}}
       />
   </span>
 
   <span slot="limits-area">
-    <Text xs> {slimits} </Text>
+    <Text xs> {field.limits} </Text>
   </span>
 
   <span slot="after-area">
@@ -44,40 +45,25 @@
   import { randid } from '../helpers'
 
   export let
-    id = null,
-    label = '',
-    type = 'text',
-    layout = 'stacked',
-    width = null,
-    size='nm',
-    hints = '',
-    initial = '',
-    maxlen = null,
-    messages = {},
-    status = 'empty',
-    required = false,
-    disabled = false,
-    readonly = false,
-    help = false,
     show = true,
-    variant = 'wide',
     value;
 
+  let props = $$props;
+
   let
+    id,
     container = {}, 
     field = {},
-    me = null,
-    toggleHints = false,
+    layout = 'inline',
+    type = 'text',
     togglePassword = true,
-    typed = type,
-    layed = layout,
     maxch = null,
     focused = false,
     len = 0,
     slimits="";
 
-  value = (value === null && initial !== null) ? initial : value;
-  id = id || randid();
+  value = (value === null && props.initial !== null) ? props.initial : value;
+  id = props.id || randid();
 
   onMount(() => {
     // width of input box in chars
@@ -88,42 +74,17 @@
   })
 
   $: if ($$props) {
-
-    layed = autoLayout(value, maxch, type);
-
-    typed = type;
-
-    container = {
-      variant: variant,
-      label: label,
-      hints: hints,
-      helper: help
-    }
-
-    field = {
-      width: width,
-      size: size,
-      initial: initial,
-      required: required && !disabled && !readonly,
-      disabled: disabled,
-      readonly: readonly,
-      status: status, 
-      messages: messages,
-      maxlen: maxlen      
-    }
+    props = $$props;
+    reset(props, value);
   };
 
-  $: if (type==='password' && togglePassword!==null) {
-    typed = togglePassword ? 'password' : 'text';
+  $: if (props.type==='password' && togglePassword!==null) {
+    type = togglePassword ? 'password' : 'text';
   };
 
   $: if (value !== null) {
 
-    layed = autoLayout(value, maxch, type);
-
-    field.width = (layed==='stacked') ? '100%' : width;
-
-    field.status = 'valid'; // reset before validations
+    reset(props, value);
 
     field = validateIf(value, field, [
       exceedsMaxlength,
@@ -131,16 +92,45 @@
     ])
 
     field.status = value.trim().length ? field.status : 'empty';
-    field.limits = value.length+" / "+maxlen;
+    field.limits = value.length+" / "+props.maxlen;
   }
 
-  function autoLayout(value, maxch, type) {
+  function reset(props, value) {
+
+    type = props.type;
+    layout = autoLayout(value, maxch, props.type, props.layout);
+
+    container = {
+      variant: props.variant,
+      label: props.label,
+      hints: props.hints,
+    }
+    
+    field = {
+      width: props.width,
+      size: props.size,
+      initial: props.initial,
+      required: props.required && !props.disabled && !props.readonly,
+      disabled: props.disabled,
+      readonly: props.readonly,
+      status: props.status, 
+      messages: props.messages,
+      maxlen: props.maxlen      
+    }
+
+    field.width = (layout==='stacked') ? '100%' : props.width;
+
+    field.status = value!==null && value.trim().length ? props.status : 'empty';
+  }
+
+  function autoLayout(value, maxch, type, layout) {
     
     if (type==='area') return 'stacked';
 
     let isPhone = onBreakpoint({'*': true, 'md': false})
 
-    return (isPhone && isPhone && layout==='inline' && value.length > maxch) 
-            ? 'stacked' : layout;
+    return (isPhone && layout==='inline' && value!==null && value.length > maxch) 
+            ? 'stacked' 
+            : layout;
   }
 </script>

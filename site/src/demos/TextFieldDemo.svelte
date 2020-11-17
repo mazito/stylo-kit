@@ -2,9 +2,7 @@
 
 <Panel noborder="1" rounded="sm">
 
-  <Heading thin nm mb="nm" m="nm">Encabezado de seccion</Heading>
-
-  <Panel nm="nm">
+  <Panel nm="nm" border="1">
     <TextField {...field} bind:value={value}/>
     <TextField {...field} bind:value={value}/>
     <TextField {...field} bind:value={value}/>
@@ -32,30 +30,28 @@
 
 <script>
   import { Heading, Label, Input, Panel, Box, Select } from 'svelte-stylo'
-  import { TextField, Chip } from 'svelte-stylo-kit'
+  import { TextField, Chip, FieldProps } from 'svelte-stylo-kit'
   import SharedOptions from './SharedOptions.svelte'
 
   let field = {
-    label: 'Supervisor de calidad',
-    type: 'text',
-    layout: 'inline',
-    variant: 'wide',
-    initial: '',
-    hints: 'Some useful hint ...',
-    width: '32ch',
-    maxlen: 12,
-    status: 'valid',
-    required: true,
-    disabled: false,
-    readonly: false,
-    helper: true,
-    messages: {
-      empty: 'This field is empty, please fill it',
-      incomplete: 'It\'s still incomplete, please go on',
-      error: 'Mmmm, something is wrong ',
-      valid: ''
-    }
+    ...FieldProps.Common,
+    ...FieldProps.Text,
+  }
+ 
+  const defaults = {
+    label: 'A field label',
+    size: 32,
+    maxlen: 10,
   };
+
+  Object.keys(field).map((t) => {
+    field[t] = defaults[t] || field[t];
+  });
+
+  field.messages.errors = {
+    'is_empty': 'Must complete it',
+    'max_length_exceeded': 'String is tooo long !'
+  }
 
   let value = null;
 

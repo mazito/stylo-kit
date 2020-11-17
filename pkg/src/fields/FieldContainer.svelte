@@ -99,14 +99,13 @@
     id,
     label = '',
     layout = 'stacked',
+    variant = 'wide',
     status = 'empty',
     required = false,
     focused = false,
     messages = {},
     hints = '',
     limits = '',
-    variant = 'wide',
-
     // default for all
     show = true;
 
