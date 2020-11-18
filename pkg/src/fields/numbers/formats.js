@@ -1,7 +1,8 @@
 
 
 export function numberToLocal(s, decimals) {
-  if (s === undefined || s == null) return NaN;
+  if (s === undefined || s == null) return '';
+  if (isNaN(s)) return '';
   s = (typeof s !== "string") ? s.toString() : s;
   var x = s.replace(".", ",");
   return x;

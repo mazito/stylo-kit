@@ -1,12 +1,16 @@
 {#if show}
-  <Panel flex items="center" w="100%" pt="xs">
+  <Panel flex items="center" nw="100%" pt="xs">
 
     {#if status==='empty' && hints}
       <Text xs color="muted">{@html hints}</Text>
     {/if}
 
-    {#if (isError && messages['error'])}
-      <Text xs color={colored['error']}>{messages['error']}</Text>
+    {#if (isError && errors.length)}
+      <Text xs color={colored['error']}>
+        {#each errors as err}
+          {messages['errors'][err]} &nbsp;
+        {/each}
+      </Text>
     {/if}
 
     {#if (isValid && messages['valid'])}
@@ -21,6 +25,7 @@
 
   export let 
     hints = '',
+    errors = [],
     messages = {},
     status = 'empty',
     show = true;

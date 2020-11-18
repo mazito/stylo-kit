@@ -2,18 +2,14 @@
 export function validateIf(value, field, validators) {
   /**
    * Validates all error conditions when value changes 
-   * and assembles the combined error messages if on error.
+   * and assembles the combined errors array if on error.
+   * @returns: array of error codes, or [] if no errors
    */
-  let codes = validators
+  let errors = validators
     .map((validator) => validator(value, field))
-    .filter((co) => co!==null)
+    .filter((co) => co !== null)
 
-  const message = codes.join('. '); // will be empty if no errors
-  
-  field.status = message ? 'error' : field.status;
-  field.messages['error'] = message ? message : ''; 
-
-  return field;
+  return (errors || []);
 }
 
 
@@ -34,7 +30,7 @@ export function exceedsMaxlength(value, field) {
 
 export function isEmpty(value, field) {
   if (field.required && (value || '').toString().trim().length === 0) {
-    return 'can_not_be_empty';
+    return 'is_empty';
   }
   return null;
 }

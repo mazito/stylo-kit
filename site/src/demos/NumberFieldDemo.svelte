@@ -1,11 +1,6 @@
 <Heading lg>NumberField Demo</Heading>
 
-<Panel bg="surface" py="nm">
-  <NumberField {...field} bind:value={value}/>
-  <NumberField {...field} bind:value={value}/>
-  <NumberField {...field} bind:value={value}/>
-  <NumberField {...field} bind:value={value}/>
-  <NumberField {...field} bind:value={value}/>
+<Panel bg="surface" py="nm" border="1">
   <NumberField {...field} bind:value={value}/>
 </Panel>
 
@@ -45,31 +40,34 @@
 
 <script>
   import { Heading, Label, Input, Panel, Box, Select } from 'svelte-stylo'
-  import { TextField, NumberField, Chip } from 'svelte-stylo-kit'
+  import { NumberField, Chip, FieldProps } from 'svelte-stylo-kit'
   import SharedOptions from './SharedOptions.svelte'
 
   let field = {
-    label: 'Precio total ($)',
+    ...FieldProps.Common,
+    ...FieldProps.Number,
+  }
+ 
+  const defaults = {
+    label: 'Total price',
     type: 'decimal',
-    layout: 'inline',
-    initial: 12.39,
-    hints: 'Some useful hint here ...',
-    width: '12ch',
-    status: 'valid',
-    required: true,
-    disabled: false,
-    readonly: false,
-    helper: false,
-    messages: {
-      empty: 'This field is empty, please fill it',
-      incomplete: 'It\'s still incomplete, please go on',
-      error: 'Mmmm, something is wrong ',
-      valid: ''
-    },
+    size: 12,
     min: 10,
-    max: 100,
-    format: '$ ###,##'
+    max: 20,
+    format: '$ ###,##',
+    initial: null
   };
+
+  Object.keys(field).map((t) => {
+    field[t] = defaults[t] || field[t];
+  });
+
+  field.messages.errors = {
+    'is_empty': 'Must complete it',
+    'lower_than_min_limit': 'Lower than min '+field.min,
+    'bigger_than_max_limit': 'Greater than max '+field.max,
+    'not_a_valid_number': 'Not a valid number'
+  }
 
   let value = null;
 

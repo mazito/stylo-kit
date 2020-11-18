@@ -64,7 +64,7 @@
     { title: 'ChartsField', component: null },
   ]
 
-  let theDemo = demos[0].component;
+  let theDemo = demos[1].component;
 
   function clicked(demo) {
     theDemo = demo.component;

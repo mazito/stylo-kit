@@ -65,14 +65,14 @@
     </Panel>
 
     <!-- Messages & limits area-->
-    <Panel flex items="start" h="1.25" show={wide}>
+    <Panel flex items="start" justify="start" h="1.25" show={wide}>
       
-      <Panel grow show={wide && focused}>
-        <MessagesArea hints={hints} messages={messages} status={status} />
+      <Panel nogrow show={wide && focused}>
+        <MessagesArea {hints} {messages} {errors} {status} />
       </Panel>
 
-      <Panel show={wide && focused}>
-        <Text xs> {limits} </Text>
+      <Panel show={wide && focused} ml="nm">
+        <Text xs>{limits ? ' ('+limits+')' : ''}</Text>
       </Panel>
 
     </Panel>
@@ -104,6 +104,7 @@
     required = false,
     focused = false,
     messages = {},
+    errors = [],
     hints = '',
     limits = '',
     // default for all

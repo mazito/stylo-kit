@@ -1,40 +1,42 @@
-<FieldContainer
-  {id} {layout} {focused} 
-  {...container} 
-  {...field} 
-  bind:value>
+{#if show}
+  <FieldContainer
+    {id} {layout} {focused} 
+    {...container} 
+    {...field} 
+    bind:value>
 
-  <span slot="before-area">
-    <!-- before-area -->
-  </span>
+    <span slot="before-area">
+      <!-- before-area -->
+    </span>
 
-  <span slot="input-area">
-    <InputArea {id} {type} {layout} {...field} bind:value
-      mini={props.variant==='mini' || null}
-      on:focus={()=> {focused = true}}
-      on:blur={()=> {focused = false}}
-      />
-  </span>
+    <span slot="input-area">
+      <InputArea {id} {type} {layout} {...field} bind:value
+        mini={props.variant==='mini' || null}
+        on:focus={()=> {focused = true}}
+        on:blur={()=> {focused = false}}
+        />
+    </span>
 
-  <span slot="limits-area">
-    <Text xs> {field.limits} </Text>
-  </span>
+    <span slot="limits-area">
+      <Text xs>{field.limits}</Text>
+    </span>
 
-  <span slot="after-area">
+    <span slot="after-area">
 
-    {#if type==='password'} 
-      <Label 
-        on:click={(ev) => { togglePassword = !togglePassword; }}
-        color="dark">
-        <Icon 
-          pointer hover round
-          name={togglePassword ? "show" : "hide"}
-          xl w="2" h="2"/>
-      </Label>
-    {/if}
-  </span>
+      {#if type==='password'} 
+        <Label 
+          on:click={(ev) => { togglePassword = !togglePassword; }}
+          color="dark">
+          <Icon 
+            pointer hover round
+            name={togglePassword ? "show" : "hide"}
+            xl w="2" h="2"/>
+        </Label>
+      {/if}
+    </span>
 
-</FieldContainer>
+  </FieldContainer>
+{/if}
 
 <script>
   import { onMount } from 'svelte'
@@ -58,9 +60,7 @@
     type = 'text',
     togglePassword = true,
     maxch = null,
-    focused = false,
-    len = 0,
-    slimits="";
+    focused = false;
 
   value = (value === null && props.initial !== null) ? props.initial : value;
   id = props.id || randid();
@@ -70,7 +70,7 @@
     // we assumed a char width of 16px to calculate it 
     // and apply a safety value of 10 chars to change before end
     let bounds = document.getElementById(id).getBoundingClientRect();
-    maxch = parseInt(bounds.width / 16 * 0.75) ;
+    maxch = parseInt(bounds.width / 16) ;
   })
 
   $: if ($$props) {
@@ -86,13 +86,13 @@
 
     reset(props, value);
 
-    field = validateIf(value, field, [
+    field.errors = validateIf(value, field, [
       exceedsMaxlength,
       isEmpty
     ])
 
-    field.status = value.trim().length ? field.status : 'empty';
-    field.limits = value.length+" / "+props.maxlen;
+    let status = field.errors.length ? 'error' : field.status;
+    field.status = value.trim().length ? status : 'empty';
   }
 
   function reset(props, value) {
@@ -115,12 +115,15 @@
       readonly: props.readonly,
       status: props.status, 
       messages: props.messages,
-      maxlen: props.maxlen      
+      maxlen: props.maxlen,
+      errors: []
     }
 
     field.width = (layout==='stacked') ? '100%' : props.width;
 
     field.status = value!==null && value.trim().length ? props.status : 'empty';
+
+    field.limits = (value===null ? 0 : value.length)+" / "+props.maxlen;
   }
 
   function autoLayout(value, maxch, type, layout) {

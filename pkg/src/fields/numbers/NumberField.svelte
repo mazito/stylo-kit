@@ -1,11 +1,15 @@
 {#if show}
-  <FieldContainer {id} {layout} {...container} {...field} bind:value >
+  <FieldContainer {id} {layout} {focused} {...container} {...field} >
 
     <span slot="input-area">
       <InputArea 
         {id} {type} {layout} {...field} bind:value={buffer} 
         on:focus={onFocus} on:blur={onBlur}
         />
+    </span>
+
+    <span slot="limits-area">
+      <Text xs> {field.limits} </Text>
     </span>
 
   </FieldContainer>
@@ -19,134 +23,115 @@
   //import InputArea from '../_InputArea.svelte'
   import FieldContainer from '../FieldContainer.svelte'
   import InputArea from '../_InputArea.svelte'
-
   import { validateIf, exceedsMax, exceedsMin, isEmpty, notANumber } from '../validators'
-  import { randid, autoLayout } from '../helpers'
+  import { randid } from '../helpers'
   import { formatNumber, localToNumber, numberToLocal } from './formats';
 
   export let
-    show = true, // show/hide this field
-    //
-    id = null,
-    label = '',
-    type = 'decimal', // integer, decimal, phone
-    size = 10, // size in chars of the field
-    initial = '',
-    value,
-    // 
-    layout = 'inline',
-    variant = 'wide',
-    width = null, // can be used instead of size, ex: '100%'
-    //
-    hints = '',
-    status = 'empty',
-    messages = {},
-    //
-    required = false,
-    disabled = false,
-    readonly = false,
+    show = true,
+    value;
 
-    // number only props
-    max = null, 
-    min = null,
-    format = '',
-    //
-    buffer;
+  let props = $$props;
 
   let
+    id,
     container = {}, 
     field = {},
+    layout = 'inline',
+    type = 'text',
+    togglePassword = true,
+    maxch = null,
     focused = false,
-    typed = type,
-    layed = layout,
     previous = null,
-    maxch = null;
+    buffer;
 
-  id = id || randid();
-
-  value = (value === null && initial !== null) ? initial : value;
-  buffer = formatNumber(value, format);
-
-  onMount(() => {
-    // width of input box in chars
-    // we assumed a char width of 16px to calculate it 
-    // and apply a safety value of 10 chars to change before end
-    let bounds = document.getElementById(id).getBoundingClientRect();
-    maxch = parseInt(bounds.width / 16 * 0.75) ;
-  })
-
+  id = props.id || randid();
+    
+  value = (value === null && props.initial !== null) ? props.initial : value;
+  buffer = formatNumber(value, props.format);
+  
   $: if ($$props) {
-
-    layed = autoLayout(buffer, maxch, type, layout);
-
-    typed = type;
-
-    container = {
-      inside: 'plain',
-      label: label,
-      hints: hints,
-      helper: help
-    }
-
-    field = {
-      width: width,
-      size: size,
-      initial: initial,
-      required: required,
-      disabled: disabled,
-      readonly: readonly,
-      status: status, 
-      messages: messages,
-      max: max,
-      min: min      
-    }
-
-    field = validate(value, field);
+    props = $$props;
+    reset(props, buffer);
+    field = validate(field, buffer)
+    console.log("NumberField $$props status,buffer=", field.status, buffer)
   };
 
   $: if (focused && buffer !== null) {
-    
-    //console.log("NumberField entered $buffer", buffer);
+  
+    console.log("NumberField buffer=", buffer)
+      
+    reset(props, buffer);
 
-    layed = autoLayout(buffer, maxch, type, layout);
-
-    // field.width = (layed==='stacked') ? '100%' : width;
-
-    field.status = 'valid'; // reset before validations
-
-    const v = localToNumber(buffer);
-
-    field =  validate(v, field);
-
-    //console.log("NumberField validateIf v,field=", v, field)
+    field = validate(field, buffer)
+    console.log("NumberField $buffer status,buffer=", field.status, buffer)
   }
+
+  function reset(props, val) {
+
+    type = props.type;
+    layout = props.layout;
+
+    container = {
+      variant: props.variant,
+      label: props.label,
+      hints: props.hints,
+    }
+
+    field = {
+      width: props.width,
+      size: props.size,
+      initial: props.initial,
+      required: props.required && !props.disabled && !props.readonly,
+      disabled: props.disabled,
+      readonly: props.readonly,
+      status: props.status, 
+      messages: props.messages,
+      errors: [],
+      min: props.min,      
+      max: props.max,      
+      format: props.format
+    }
+
+    field.width = (layout==='stacked') ? '100%' : props.width;
+
+    field.status = val!==null && val.toString().trim().length ? props.status : 'empty';
+
+    field.limits = [(props.min ? "> "+props.min : null), 
+                    (props.max ? '< '+props.max : null)]
+                    .filter((t) => t!==null)
+                    .join(' y ')
+  }
+
+
+  function validate(field, val) {
+
+    field.errors = validateIf(localToNumber(val), field, [
+      exceedsMax,
+      exceedsMin,
+      isEmpty, 
+      notANumber
+    ])
+
+    let status = field.errors.length ? 'error' : field.status;
+    field.status = val.toString().trim().length ? status : 'empty';
+
+    return field;
+  }
+
 
   function onFocus(ev) {
     buffer = numberToLocal(value);
     focused = true;
-    //console.log("NumberField onFocus value,buffer=", value, buffer);
+    console.log("NumberField ---onFocus value,buffer=", value, buffer);
   }
 
   function onBlur(ev) {
     focused = false;
-
     value = localToNumber(buffer);
-    
-    field = validate(value, field);
-    
+    console.log("NumberField ---onBlur status,value,buffer=", field.status, value, buffer);
     tick().then(() => {
-      buffer = formatNumber(value, format);
-      //console.log("NumberField onBlur value,buffer=", value, buffer);
+      buffer = formatNumber(value, props.format);
     })
-  }
-
-  function validate(value, field) {
-    return (validateIf(value, field, [
-        exceedsMax,
-        exceedsMin,
-        isEmpty, 
-        notANumber
-      ])
-    );
   }
 </script>
