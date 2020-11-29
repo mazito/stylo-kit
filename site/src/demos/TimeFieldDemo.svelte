@@ -1,7 +1,7 @@
 <Heading lg>NumberField Demo</Heading>
 
 <Panel bg="surface" py="nm">
-  <DateField {...field} bind:value={value}/>
+  <TimeField {...field} bind:value={value}/>
 </Panel>
 
 <Panel my="nm" p="nm" border="3">
@@ -10,7 +10,7 @@
 
 <SharedOptions 
   bind:field={field} 
-  types={['integer', 'decimal', 'tel']}>
+  types={['time', 'timestamp']}>
 
   <Panel mb="xs">
     <Chip>min</Chip> 
@@ -40,32 +40,41 @@
 
 <script>
   import { Heading, Label, Input, Panel, Box, Select } from 'svelte-stylo'
-  import { DateField, Chip } from 'svelte-stylo-kit'
+  import { TimeField, Chip, AnyFieldProps, TimeFieldProps } from 'svelte-stylo-kit'
   import SharedOptions from './SharedOptions.svelte'
 
   let field = {
-    label: 'Precio total ($)',
-    type: 'decimal',
-    layout: 'inline',
-    initial: "2020-12-05",
-    hints: 'Some useful hint here ...',
-    width: '12ch',
-    status: 'valid',
-    required: true,
-    disabled: false,
-    readonly: false,
-    helper: false,
-    messages: {
-      empty: 'This field is empty, please fill it',
-      incomplete: 'It\'s still incomplete, please go on',
-      error: 'Mmmm, something is wrong ',
-      valid: ''
-    },
-    min: 10,
-    max: 100,
-    format: '$ ###,##'
+    ...AnyFieldProps,
+    ...TimeFieldProps,
+  }
+
+  const defaults = {
+    label: 'Time (hh:mm)',
+    type: 'time', // time , timestamp
+    initial: null,
+    hints: 'Please input time in hh:mm format',
+    size: 6,
+    min: "00:00",
+    max: "24:00",
+
+    // indicates the **input** mask when type=number in regex format
+    // examples 'dd-mm-yy', 'm-d-yyyy', etc 
+    mask: 'dd\:dd',
+    
+    // indicates how to **display** the date value
+    format: '##:##'
   };
 
-  let value = null;
+  Object.keys(field).map((t) => {
+    field[t] = defaults[t] || field[t];
+  });
 
+  field.messages.errors = {
+    'is_empty': 'Must complete it',
+    'lower_than_min_limit': 'Lower than min '+field.min,
+    'bigger_than_max_limit': 'Greater than max '+field.max,
+    'not_a_valid_time': 'Not a valid time'
+  }
+
+  let value = null;
 </script>

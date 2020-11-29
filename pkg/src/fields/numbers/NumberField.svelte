@@ -54,17 +54,13 @@
     props = $$props;
     reset(props, buffer);
     field = validate(field, buffer)
-    console.log("NumberField $$props status,buffer=", field.status, buffer)
+    //console.log("NumberField $$props status,buffer=", field.status, buffer)
   };
 
   $: if (focused && buffer !== null) {
-  
-    console.log("NumberField buffer=", buffer)
-      
     reset(props, buffer);
-
     field = validate(field, buffer)
-    console.log("NumberField $buffer status,buffer=", field.status, buffer)
+    //console.log("NumberField $buffer status,buffer=", field.status, buffer)
   }
 
   function reset(props, val) {
@@ -103,7 +99,6 @@
                     .join(' y ')
   }
 
-
   function validate(field, val) {
 
     field.errors = validateIf(localToNumber(val), field, [
@@ -119,17 +114,16 @@
     return field;
   }
 
-
   function onFocus(ev) {
     buffer = numberToLocal(value);
     focused = true;
-    console.log("NumberField ---onFocus value,buffer=", value, buffer);
+    //console.log("NumberField ---onFocus value,buffer=", value, buffer);
   }
 
   function onBlur(ev) {
     focused = false;
     value = localToNumber(buffer);
-    console.log("NumberField ---onBlur status,value,buffer=", field.status, value, buffer);
+    //console.log("NumberField ---onBlur status,value,buffer=", field.status, value, buffer);
     tick().then(() => {
       buffer = formatNumber(value, props.format);
     })

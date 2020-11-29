@@ -40,12 +40,12 @@
 
 <script>
   import { Heading, Label, Input, Panel, Box, Select } from 'svelte-stylo'
-  import { NumberField, Chip, FieldProps } from 'svelte-stylo-kit'
+  import { NumberField, Chip, AnyFieldProps, NumberFieldProps } from 'svelte-stylo-kit'
   import SharedOptions from './SharedOptions.svelte'
 
   let field = {
-    ...FieldProps.Common,
-    ...FieldProps.Number,
+    ...AnyFieldProps,
+    ...NumberFieldProps,
   }
  
   const defaults = {

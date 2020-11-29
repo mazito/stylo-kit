@@ -1,6 +1,6 @@
 <Heading lg>DateField Demo</Heading>
 
-<Panel bg="surface" py="nm">
+<Panel bg="surface" py="nm" border="1">
   <DateField {...field} bind:value={value}/>
 </Panel>
 
@@ -10,7 +10,7 @@
 
 <SharedOptions 
   bind:field={field} 
-  types={['date']}>
+  types={['calendar', 'number']}>
 
   <Panel mb="xs">
     <Chip>min</Chip> 
@@ -40,30 +40,40 @@
 
 <script>
   import { Heading, Label, Input, Panel, Box, Select } from 'svelte-stylo'
-  import { DateField, Chip } from 'svelte-stylo-kit'
+  import { DateField, Chip, AnyFieldProps, DateFieldProps } from 'svelte-stylo-kit'
   import SharedOptions from './SharedOptions.svelte'
 
   let field = {
-    label: 'Fecha',
-    type: 'date', 
-    layout: 'inline',
-    variant: 'wide',
-    initial: "2020-12-05",
-    hints: 'Please input a date or select it using calendar',
-    size: '12',
-    status: 'valid',
-    required: true,
-    disabled: false,
-    readonly: false,
-    messages: {
-      error: '',
-      valid: ''
-    },
+    ...AnyFieldProps,
+    ...DateFieldProps,
+  }
+ 
+  const defaults = {
+    label: 'Due date',
+    type: 'calendar', // 'number'
+    size: 12,
+    min: '2000-01-01', // required ISO_8601 format yyyy-mm-dd
+    max: '2020-01-01',
+    initial: null,
 
-    min: '',
-    max: '',
-    format: '##-##-####',
+    // indicates the **input** mask when type=number in regex format
+    // examples 'dd-mm-yy', 'm-d-yyyy', etc 
+    mask: '',
+
+    // indicates how to **display** the date value
+    format: '', 
   };
+
+  Object.keys(field).map((t) => {
+    field[t] = defaults[t] || field[t];
+  });
+
+  field.messages.errors = {
+    'is_empty': 'Must complete it',
+    'lower_than_min_limit': 'Lower than min '+field.min,
+    'bigger_than_max_limit': 'Greater than max '+field.max,
+    'not_a_valid_number': 'Not a valid number'
+  }
 
   let value = null;
 

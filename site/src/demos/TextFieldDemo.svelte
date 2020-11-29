@@ -30,12 +30,12 @@
 
 <script>
   import { Heading, Label, Input, Panel, Box, Select } from 'svelte-stylo'
-  import { TextField, Chip, FieldProps } from 'svelte-stylo-kit'
+  import { TextField, Chip, AnyFieldProps, TextFieldProps } from 'svelte-stylo-kit'
   import SharedOptions from './SharedOptions.svelte'
 
   let field = {
-    ...FieldProps.Common,
-    ...FieldProps.Text,
+    ...AnyFieldProps,
+    ...TextFieldProps,
   }
  
   const defaults = {

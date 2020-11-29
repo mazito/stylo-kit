@@ -55,3 +55,25 @@ export function notANumber(value, field) {
   }
   return null;
 }
+
+export function notATime(value, field) {
+
+  function isNotTime(value) {
+    try {
+      let x = value.toString().split('.'); // just two decimals
+      const hh = parseInt(x[0]);
+      const mm = Math.round((value - hh)*100);
+      console.log("notATime ", value, x, hh, (value - hh)*100, mm);
+      if (!(hh >= 0 && hh < 24 && mm >= 0 && mm < 60)) return true;
+      return false;
+    }
+    catch (err) {
+      return true;
+    }
+  }
+
+  if (value && (isNaN(value) || isNotTime(value))) {
+    return 'not_a_valid_time';
+  }
+  return null;
+}

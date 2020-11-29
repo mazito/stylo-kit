@@ -1,7 +1,8 @@
 <!--
-  prefix-area
-  postfix-area
+  before-area
+  after-area
   input-area
+  hints-area
   limits-area
 -->
 {#if show}
@@ -173,7 +174,7 @@
 
     labelContent = {
       color: focused ? "dark" : "body",
-      "font-size": "xs",
+      "font-size": "sm",
       py: isInline ? "xs" : null,
       line: "tight"
     }

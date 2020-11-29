@@ -49,7 +49,7 @@
     { title: 'TextField', component: TextFieldDemo},
     { title: 'NumberField', component: NumberFieldDemo},
     { title: 'DateField', component: DateFieldDemo},
-    { title: 'TimeField', component: null },
+    { title: 'TimeField', component: TimeFieldDemo },
     { title: 'CheckField', component: CheckFieldDemo },
     { title: 'OptionsField', component: OptionsFieldDemo },
     { title: 'ListItemField', component: null },

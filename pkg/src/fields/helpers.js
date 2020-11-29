@@ -40,3 +40,30 @@ export function autoLayout(value, maxch, type, layout) {
   return (isPhone && layout==='inline' && val.length > maxch) 
           ? 'stacked' : layout;
 }
+
+
+export function initialValue(props, value) {
+  return (value === null && props.initial !== null) ? props.initial : value
+};
+
+export function containerProps(props) {
+  return ({
+    label: props.label,
+    hints: props.hints,
+    helper: props.help,
+    variant: props.variant
+  })
+}
+
+export function fieldProps(props) {
+  return ({
+    width: props.width,
+    size: props.size,
+    initial: props.initial,
+    required: props.required,
+    disabled: props.disabled,
+    readonly: props.readonly,
+    status: props.status, 
+    messages: props.messages
+  })
+}

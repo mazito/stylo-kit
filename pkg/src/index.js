@@ -7,13 +7,20 @@ import MenuTitle from './menu/MenuTitle.svelte'
 import Chip from './chips/Chip.svelte'
 import TextField from './fields/text/TextField.svelte'
 import NumberField from './fields/numbers/NumberField.svelte'
-import DateField from './fields/date-time/DateField.svelte'
+import DateField from './fields/datetime/DateField.svelte'
+import TimeField from './fields/datetime/TimeField.svelte'
 import CheckField from './fields/checks/CheckField.svelte'
 import OptionsField from './fields/options/OptionsField.svelte'
-import FieldProps from './fields/properties.js'
+import { AnyFieldProps, TextFieldProps, NumberFieldProps, OptionsFieldProps, 
+        DateFieldProps, CheckFieldProps, TimeFieldProps,
+        FilesFieldProps, PhotosFieldProps, QrcodeFieldProps, MapFieldProps, 
+        ChartsFieldProps } from './fields/properties.js'
 
 export {
-  FieldProps,
+  AnyFieldProps, TextFieldProps, NumberFieldProps, OptionsFieldProps, 
+  DateFieldProps, CheckFieldProps, TimeFieldProps,
+  FilesFieldProps, PhotosFieldProps, QrcodeFieldProps, MapFieldProps, 
+  ChartsFieldProps,
 
   // Kit components
   Drawer, 
@@ -26,6 +33,7 @@ export {
   TextField, 
   NumberField,
   DateField,
+  TimeField,
   CheckField,
-  OptionsField
+  OptionsField,
 }
