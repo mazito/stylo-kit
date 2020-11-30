@@ -1,30 +1,28 @@
 /**
- * Field Properties Prtterns
+ * Field and Container properties 
  * 
  * MAZ - 16-11-2020
  */
 
-export const AnyFieldProps =  {
+export const FieldContainerProps =  {
   // basic props
   id: null,
   label: 'Label',
-  type: '',
-  initial: null, // initial value
 
   // options
-  size: 0,
   required: true,
   disabled: false,
   readonly: false,
 
   // layout
-  layout: 'inline',
-  variant: 'wide',
+  layout: 'inline', // layout: inline, stacked, mini
+  // variant: 'wide',
   width: null,
 
   // help and status props
   status: 'valid',
   hints: 'Some hints',
+  limits: '',
   messages: {
     errors: {
       'empty': 'Must complete it'
@@ -33,11 +31,28 @@ export const AnyFieldProps =  {
   }
 };
 
+export const AnyFieldProps =  {
+  // basic props
+  id: null,
+  initial: null, // initial value
+
+  // options
+  size: null,
+  required: true,
+  disabled: false,
+  readonly: false,
+
+  // help and status props
+  status: 'valid', // status: valid, error, empty
+};
+
 export const TextFieldProps =  {
+  ...AnyFieldProps,
   maxlen: 0
 };
 
 export const NumberFieldProps =  {
+  ...AnyFieldProps,
   // all number types
   // applies also to dateProps, timeProps & datetimeProps
   min: null,
@@ -45,17 +60,25 @@ export const NumberFieldProps =  {
   format: ''
 };
 
-export const DateFieldProps = NumberFieldProps;
+export const DateFieldProps = {
+  ...NumberFieldProps,
+  mask: 'dd-mm-yyyy',
+};
 
-export const TimeFieldProps = NumberFieldProps;
+export const TimeFieldProps = {
+  ...NumberFieldProps,
+  mask: 'hh:mm'
+}
 
 export const CheckFieldProps = AnyFieldProps;
 
 export const OptionsFieldProps =  {
+  ...AnyFieldProps,
   options: [] // [{ value: '', text: ''}, ...]
 };
 
 export const QrcodeFieldProps =  {
+  ...AnyFieldProps,
   scan: null
   /* 
     // Promise for scanner 
@@ -71,6 +94,7 @@ export const QrcodeFieldProps =  {
 };
 
 export const PhotosFieldProps =  {
+  ...AnyFieldProps,
   min: 1,
   max: null,
   count: 0,
@@ -90,6 +114,7 @@ export const PhotosFieldProps =  {
 };
 
 export const FilesFieldProps =  {
+  ...AnyFieldProps,
   min: 1,
   max: null,
   count: 0,
@@ -109,9 +134,9 @@ export const FilesFieldProps =  {
 };
 
 export const MapFieldProps =  {
-
+  ...AnyFieldProps,
 };
 
 export const ChartsFieldProps =  {
-
+  ...AnyFieldProps,
 };

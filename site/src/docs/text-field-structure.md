@@ -53,4 +53,10 @@ HintsArea
 StatusArea
 ~~~
 
+Mini
+~~~
+-- 100% ---------
+InputArea [[overlayed StatusArea]]
+~~~
+
 It can start as Wide but change to Stacked if text is too long

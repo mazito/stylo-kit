@@ -93,7 +93,7 @@
 <script>
   import { Panel, Box, Text, Label, onBreakpoint } from 'svelte-stylo'
   import StatusIcon from './_StatusIcon.svelte'
-  import MessagesArea from './_MessagesArea.svelte'
+  import MessagesArea from './container/_MessagesArea.svelte'
 
   export let 
     // container props
