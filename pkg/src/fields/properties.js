@@ -18,6 +18,7 @@ export const FieldContainerProps =  {
   layout: 'inline', // layout: inline, stacked, mini
   // variant: 'wide',
   width: null,
+  focused: false,
 
   // help and status props
   status: 'valid',
@@ -35,15 +36,16 @@ export const AnyFieldProps =  {
   // basic props
   id: null,
   initial: null, // initial value
-
+  
   // options
+  type: '',
   size: null,
   required: true,
   disabled: false,
   readonly: false,
 
-  // help and status props
-  status: 'valid', // status: valid, error, empty
+  // status
+  status: 'valid', // 'valid', 'error', 'empty'
 };
 
 export const TextFieldProps =  {

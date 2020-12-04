@@ -4,36 +4,36 @@
     <Chip>label</Chip> 
     <Input 
       p="xs"
-      bind:value={field.label}
+      bind:value={container.label}
       />
   </Panel>
 
-  <Panel mb="xs">
+  <!-- <Panel mb="xs">
     <Chip>type</Chip> 
     <Select 
       p="xs"
       options={typed}
-      bind:value={field.type}
+      bind:value={container.type}
       />
-  </Panel>
+  </Panel> -->
 
-  <Panel mb="xs">
+  <!-- <Panel mb="xs">
     <Chip>initial</Chip> 
     <Input 
       p="xs"
-      bind:value={field.initial}
+      bind:value={container.initial}
       />
-  </Panel>
+  </Panel> -->
 
   <hr>
 
-  <Panel mb="xs">
+  <!-- <Panel mb="xs">
     <Chip>size</Chip> 
     <Input 
       p="xs"
-      bind:value={field.size}
+      bind:value={container.size}
       />
-  </Panel>
+  </Panel> -->
 
   <Panel mb="xs">
     <Chip>required</Chip> 
@@ -43,7 +43,7 @@
         {value: true, text: 'true'},
         {value: false, text: 'false'},
       ]}
-      bind:value={field.required}
+      bind:value={container.required}
     />
   </Panel>
 
@@ -55,7 +55,7 @@
         {value: true, text: 'true'},
         {value: false, text: 'false'},
       ]}
-      bind:value={field.disabled}
+      bind:value={container.disabled}
     />
   </Panel>
 
@@ -67,7 +67,7 @@
         {value: true, text: 'true'},
         {value: false, text: 'false'},
       ]}
-      bind:value={field.readonly}
+      bind:value={container.readonly}
     />
   </Panel>
 
@@ -80,19 +80,21 @@
     options={[
       {value:'stacked', text: 'stacked'},
       {value:'inline', text: 'inline'},
+      {value:'mini', text: 'mini'},
       ]}
-    bind:value={field.layout}
+    bind:value={container.layout}
     />
-    &nbsp;
-    <Chip>variant</Chip> 
+  </Panel>
+
+  <Panel mb="xs">
+    <Chip>focused</Chip> 
     <Select 
       p="xs"
       options={[
-          {value:'wide', text: 'wide'},
-          {value:'compact', text: 'compact'},
-          {value:'mini', text: 'mini'},
-        ]}
-      bind:value={field.variant}
+        {value: true, text: 'true'},
+        {value: false, text: 'false'},
+      ]}
+      bind:value={container.focused}
     />
   </Panel>
 
@@ -100,7 +102,7 @@
     <Chip>width</Chip> 
     <Input 
       p="xs"
-      bind:value={field.width}
+      bind:value={container.width}
       />
   </Panel>
 
@@ -113,7 +115,7 @@
         {value: true, text: 'true'},
         {value: false, text: 'false'},
       ]}
-      bind:value={field.helper}
+      bind:value={container.helper}
     />
   </Panel> -->
 
@@ -121,7 +123,7 @@
     <Chip>hints</Chip> 
     <Input 
       p="xs"
-      bind:value={field.hints}
+      bind:value={container.hints}
       />
   </Panel>
 
@@ -135,7 +137,7 @@
         {value:'valid', text: 'valid'},
         {value:'null', text: 'null'},
       ]}
-      bind:value={field.status}
+      bind:value={container.status}
     />
   </Panel>
 
@@ -143,7 +145,7 @@
     <Chip>messages.errors</Chip> 
     <Input 
       p="xs"
-      bind:value={field.messages.errors}
+      bind:value={container.messages.errors}
       />
   </Panel>
 
@@ -151,7 +153,7 @@
     <Chip>messages.valid</Chip> 
     <Input 
       p="xs" border="3"
-      bind:value={field.messages.valid}
+      bind:value={container.messages.valid}
       />
   </Panel>
 
@@ -163,11 +165,9 @@
 
 <script>
   import { Heading, Label, Input, Panel, Box, Select } from 'svelte-stylo'
-  import { TextField, Chip } from 'svelte-stylo-kit'
+  import { Chip } from 'svelte-stylo-kit'
 
   export let 
-    field = {},
-    types = [];
+    container = {};
 
-  let typed = types.map((t) => { return { value: t, text: t }})
 </script>

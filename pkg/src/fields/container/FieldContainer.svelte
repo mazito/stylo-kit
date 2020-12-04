@@ -1,78 +1,73 @@
-<!--
-  before-area
-  after-area
-  input-area
-  hints-area
-  limits-area
--->
 {#if show}
 <Panel flex items='center' w="100%">
 
   <!-- Prefix area -->
-  {#if wide}
+  {#if isInline}
     <slot name="before-area"></slot>
   {/if}
 
   <!-- Default area -->
   <Panel grow position="relative">
 
-    <Panel {...defaultArea}>
-      
-      <!-- LabelArea only visible in Wide an Compact variants -->
-      {#if !mini}
-      <Panel {...labelArea}>
+    <Panel flex>
+      <Panel {...defaultArea} w="100%">
         
-        <!-- Label here -->
-        <Label control={id} {...labelContent}>
-          {label}
-          <!-- <Text show={!!required && status==='empty'} color="warning">*</Text> -->
+        <!-- LabelArea only visible in Inline an Stacked variants -->
+        {#if !isMini}
+        <Panel {...labelArea}>
+          
+          <!-- Label here -->
+          <Label control={id} {...labelContent}>
+            {label}
+            <!-- <Text show={!!required && status==='empty'} color="warning">*</Text> -->
 
-          {#if isStacked}
+            {#if isStacked}
+            <Box {...statusArea}>
+              <StatusIcon show={!!required} status={status}/>
+            </Box>
+            {/if}
+
+          </Label>
+
+          {#if isInline}
           <Box {...statusArea}>
             <StatusIcon show={!!required} status={status}/>
           </Box>
           {/if}
 
-        </Label>
-
-        {#if isInline}
-        <Box {...statusArea}>
-          <StatusIcon show={!!required} status={status}/>
-        </Box>
+        </Panel>
         {/if}
 
+        <Panel {...inputArea}>
+          <slot name="input-area"></slot>
+
+          <!-- In  Compact and Mini variants, afterArea must overlay input -->
+          {#if !isInline}
+            <Box {...afterArea}>
+              
+              <!-- In  Mini variant, status must overlay the input -->
+                {#if isMini}
+                <Box  {...statusArea}>
+                  <StatusIcon show={!!required} status={status}/>
+                </Box>
+              {/if}
+      
+              <slot name="after-area"></slot>
+            </Box>
+          {/if}
+        </Panel>
+
       </Panel>
-      {/if}
-
-      <Panel {...inputArea}>
-        <slot name="input-area"></slot>
-
-        <!-- In  Compact and Mini variants, afterArea must overlay input -->
-        {#if !wide}
-          <Box {...afterArea}>
-            
-            <!-- In  Mini variant, status must overlay the input -->
-              {#if mini}
-              <Box  {...statusArea}>
-                <StatusIcon show={!!required} status={status}/>
-              </Box>
-            {/if}
-    
-            <slot name="after-area"></slot>
-          </Box>
-        {/if}
-      </Panel>
-
     </Panel>
 
     <!-- Messages & limits area-->
-    <Panel flex items="start" justify="start" h="1.25" show={wide}>
+    <Panel flex items="start" justify="start" h="1.25" show={isInline || isStacked}>
       
-      <Panel nogrow show={wide && focused}>
+      <Panel nogrow show={!isMini && focused}>
         <MessagesArea {hints} {messages} {errors} {status} />
       </Panel>
 
-      <Panel show={wide && focused} ml="nm">
+      <Panel show={!isMini && focused} ml="nm">
         <Text xs>{limits ? ' ('+limits+')' : ''}</Text>
       </Panel>
 
@@ -81,7 +76,7 @@
   </Panel>
 
   <!-- Postfix area -->
-  {#if wide}
+  {#if isInline}
     <Box {...afterArea}>
       <slot name="after-area"></slot>
     </Box>
@@ -93,14 +88,13 @@
 <script>
   import { Panel, Box, Text, Label, onBreakpoint } from 'svelte-stylo'
   import StatusIcon from './_StatusIcon.svelte'
-  import MessagesArea from './container/_MessagesArea.svelte'
+  import MessagesArea from './_MessagesArea.svelte'
 
   export let 
     // container props
     id,
     label = '',
     layout = 'stacked',
-    variant = 'wide',
     status = 'empty',
     required = false,
     focused = false,
@@ -114,10 +108,7 @@
   let   
     isInline = (layout === 'inline'),
     isStacked = (layout === 'stacked'),
-    // variants
-    wide = variant === 'wide' || null,
-    compact = variant === 'compact' || null,
-    mini = variant === 'mini' || null;
+    isMini = (layout === 'mini');
 
   let 
     defaultArea = {},
@@ -127,30 +118,25 @@
     statusArea = {},
     afterArea = {};
 
-  $: if (variant !== null) {
-    wide = variant === 'wide' || null,
-    compact = variant === 'compact' || null,
-    mini = variant === 'mini' || null;
-    layout = (mini || compact) ? 'stacked': layout ; 
-    console.log("FieldContainer layout1", layout)
-  }
-
   $: if (layout !== null) {
     isInline = (layout === 'inline');
     isStacked = (layout === 'stacked');
-    console.log("FieldContainer layout2", layout)
+    isStacked = (layout === 'stacked');
+    isMini = (layout === 'mini');
+    console.log("FieldContainer layout", layout)
 
     defaultArea = {
       flex: isInline ? 'row' : null,
       items: isInline ? 'end' : null,
       justify: isInline ? 'start' : null,
       // border: "1",
-      bg: isStacked && focused ? 'light' : 'transparent'
+      mt: isInline ? 'nm' : null,
+      bg: 'trasnparent', //(isStacked || isMini) && focused ? 'light' : 'transparent'
     }
 
     inputArea = {
-      w: isStacked ? '100%' : onBreakpoint({'*': "50%", 'md': 'auto'}),
-      mt: isStacked && !mini ? "nm" : null
+      w: isStacked ? '100%' : onBreakpoint({'*': "50%", 'md': '100%'}),
+      mt: isStacked ? "nm" : null
     }
 
     labelArea = {
@@ -180,23 +166,23 @@
     }
 
     statusArea = {
-      // for Compact and Mini layouts
-      mr: (mini) ? '0' : (wide ? 'xs' : null),
-      mb: (mini) ? 'xs' : null,
+      // for Stacked and Mini layouts
+      mr: (isMini) ? '0' : (isInline ? 'xs' : null),
+      mb: (isMini) ? 'xs' : null,
 
-      // when Wide layout
-      ml: (wide) ? 'xs' : null,
+      // when Inline layout
+      ml: isInline ? 'xs' : null,
       pb: isInline ? 'sm' : null,
     }
 
     afterArea = {
-      // for Compact and Mini layouts
-      position: (!wide) ?  'absolute' : 'relative',
-      right: (!wide) ?  '2px' : null,
-      bottom: (!wide) ?  '2px' : null,
+      // for Stacked and Mini layouts
+      position: (isStacked || isMini) ?  'absolute' : 'relative',
+      right: (isStacked || isMini) ?  '2px' : null,
+      bottom: (isStacked || isMini) ?  '0px' : null,
 
-      // when Wide layout
-      ml: (wide) ? 'sm' : null,
+      // when isInline layout
+      ml: (isInline) ? 'sm' : null,
     }
   }
 </script>

@@ -1,41 +1,20 @@
 {#if show}
-  <FieldContainer
-    {id} {layout} {focused} 
-    {...container} 
-    {...field} 
-    bind:value>
+    <InputArea {id} {type} {layout} {...field} bind:value
+      mini={props.variant==='mini' || null}
+      on:focus={()=> {focused = true}}
+      on:blur={()=> {focused = false}}
+      />
 
-    <span slot="before-area">
-      <!-- before-area -->
-    </span>
-
-    <span slot="input-area">
-      <InputArea {id} {type} {layout} {...field} bind:value
-        mini={props.variant==='mini' || null}
-        on:focus={()=> {focused = true}}
-        on:blur={()=> {focused = false}}
-        />
-    </span>
-
-    <span slot="limits-area">
-      <Text xs>{field.limits}</Text>
-    </span>
-
-    <span slot="after-area">
-
-      {#if type==='password'} 
-        <Label 
-          on:click={(ev) => { togglePassword = !togglePassword; }}
-          color="dark">
-          <Icon 
-            pointer hover round
-            name={togglePassword ? "show" : "hide"}
-            xl w="2" h="2"/>
-        </Label>
-      {/if}
-    </span>
-
-  </FieldContainer>
+    {#if type==='password'} 
+      <Label 
+        on:click={(ev) => { togglePassword = !togglePassword; }}
+        color="dark">
+        <Icon 
+          pointer hover round
+          name={togglePassword ? "show" : "hide"}
+          xl w="2" h="2"/>
+      </Label>
+    {/if}
 {/if}
 
 <script>

@@ -34,37 +34,40 @@
 <script>
   import { Panel, Heading, Box, Label } from 'svelte-stylo'
   import { customizedTheme } from './customized-theme'
-  import TextFieldDemo from './demos/TextFieldDemo.svelte'
-  import NumberFieldDemo from './demos/NumberFieldDemo.svelte'
-  import DateFieldDemo from './demos/DateFieldDemo.svelte'
-  import TimeFieldDemo from './demos/TimeFieldDemo.svelte'
-  import CheckFieldDemo from './demos/CheckFieldDemo.svelte'
-  import OptionsFieldDemo from './demos/OptionsFieldDemo.svelte'
-  import ListItemFieldDemo from './demos/ListItemFieldDemo.svelte'
+  import FieldContainerDemo from './demos/FieldContainerDemo.svelte'
+  // import TextFieldDemo from './demos/TextFieldDemo.svelte'
+  // import NumberFieldDemo from './demos/NumberFieldDemo.svelte'
+  // import DateFieldDemo from './demos/DateFieldDemo.svelte'
+  // import TimeFieldDemo from './demos/TimeFieldDemo.svelte'
+  // import CheckFieldDemo from './demos/CheckFieldDemo.svelte'
+  // import OptionsFieldDemo from './demos/OptionsFieldDemo.svelte'
+  // import ListItemFieldDemo from './demos/ListItemFieldDemo.svelte'
 
   customizedTheme();
 
   let demos = [
+    { title: 'FieldContainer', component: FieldContainerDemo},
+
     // Input fields
-    { title: 'TextField', component: TextFieldDemo},
-    { title: 'NumberField', component: NumberFieldDemo},
-    { title: 'DateField', component: DateFieldDemo},
-    { title: 'TimeField', component: TimeFieldDemo },
-    { title: 'CheckField', component: CheckFieldDemo },
-    { title: 'OptionsField', component: OptionsFieldDemo },
-    { title: 'ListItemField', component: null },
+    // { title: 'TextField', component: TextFieldDemo},
+    // { title: 'NumberField', component: NumberFieldDemo},
+    // { title: 'DateField', component: DateFieldDemo},
+    // { title: 'TimeField', component: TimeFieldDemo },
+    // { title: 'CheckField', component: CheckFieldDemo },
+    // { title: 'OptionsField', component: OptionsFieldDemo },
+    // { title: 'ListItemField', component: null },
 
-    // pending
-    { title: 'QRCodeField', component: null },
-    { title: 'PhotosField', component: null },
-    { title: 'FilesField', component: null },
+    // // pending
+    // { title: 'QRCodeField', component: null },
+    // { title: 'PhotosField', component: null },
+    // { title: 'FilesField', component: null },
 
-    // Pure display fields
-    { title: 'MapField', component: null },
-    { title: 'ChartsField', component: null },
+    // // Pure display fields
+    // { title: 'MapField', component: null },
+    // { title: 'ChartsField', component: null },
   ]
 
-  let theDemo = demos[1].component;
+  let theDemo = demos[0].component;
 
   function clicked(demo) {
     theDemo = demo.component;
